@@ -12,6 +12,18 @@
 /*.userprefs
 /*.pidb
 /*.booproj
+*.meta
+
+Library/*
+ProjectSettings/*
+Assets/Animation/*
+Assets/Audio/*
+Assets/Materials/*
+Assets/Textures/*
+Assets/Models/*
+Assets/MobileInput/Textures/*
+Assets/Scenes/*
+Assets/Prefabs/*
 
 #Unity3D Generated File On Crash Reports
 sysinfo.txt
