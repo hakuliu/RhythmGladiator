@@ -59,8 +59,10 @@ public class PlayerHealth : MonoBehaviour
 			shieldSlider.value = currentShield;
 		}
 	}
-
-    public void TakeDamage (int amount)
+	public void HandleDamageEvent(DamageEvent e) {
+		TakeDamage (e.Value);
+	}
+    private void TakeDamage (int amount)
     {
 
 		damageTimer = 0;

@@ -4,9 +4,9 @@ using System.Collections;
 public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 {
 	public int attackDamage = 5;
-	public float damagedelay = .2f;
 	public float damageRadius = .6f;
 	public float destroyFromTargetRadius = 1f;
+	DamageManager damager;
 
 	//game objects and scripts from outside
 	GameObject player;
@@ -19,8 +19,6 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 	enum MovementState {Rising, Hovering, Shooting, Destroy};
 	MovementState movementState;
 	BeatTracker tracker;
-	bool launched = false;
-	float launchtimer = 0;
 
 
 	//some variables cached for movement behaviors
@@ -35,6 +33,8 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 		movementState = MovementState.Rising;
 		player = GameObject.FindGameObjectWithTag ("Player");
 		floor = GameObject.FindGameObjectWithTag ("Floor");
+		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
+		damager = managers.GetComponent<DamageManager> ();
 		playerHealth = player.GetComponent <PlayerHealth> ();
 		gunLine = GetComponent <LineRenderer> ();
 		this.audios = GetComponent<AudioSource> ();
@@ -66,7 +66,6 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 	void FixedUpdate ()
 	{
 		tracker.FixedUpdate ();
-		updateDamageApplicator ();
 	}
 
 	void Rise() 
@@ -121,38 +120,14 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 		this.tracker.assignEvents (events, deltas);
 	}
 	
-
-	void ApplyDamage ()
-	{	
-		if(playerHealth.currentHealth > 0)
-		{
-			playerHealth.TakeDamage (attackDamage);
-		}
-	}
-	void updateDamageApplicator()
-	{
-		if (launched) {
-			launchtimer += Time.fixedDeltaTime;
-			if(launchtimer >= damagedelay) {
-				checkAndAttack();
-			}
-		}
-	}
-	void checkAndAttack()
-	{
-		if (Vector3.Distance (player.transform.position, targetLoc) <= damageRadius) {
-			ApplyDamage ();
-		}
-		Destroy ();
-	}
 	void setTargetToPlayer()
 	{
 		//i think Vec3 in C# is a struct so this is safe and will copy, won't reference.
 		targetLoc = player.transform.position;
-		launched = true;
 		gunLine.enabled = true;
 		gunLine.SetPosition (0, transform.position);
 		gunLine.SetPosition (1, targetLoc);
+		damager.scheduleDamage(new SphericalDamageEvent(this.attackDamage, this.damageRadius, targetLoc));
 	}
 
 	void IHasSequentialStates.goToNextState() 
