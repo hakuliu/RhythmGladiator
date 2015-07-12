@@ -6,12 +6,12 @@ public class DamageManager : MonoBehaviour
 	public float delayTime = .3f;//seconds
 	public PlayerHealth playerHealthScript;
 	public Transform playerTransform;
-	private ArrayList scheduledDamages = new ArrayList();
+	private ArrayList scheduledDamages;
 
 	// Use this for initialization
 	void Start ()
 	{
-	
+		scheduledDamages = new ArrayList();
 	}
 
 	void FixedUpdate() {
@@ -25,7 +25,6 @@ public class DamageManager : MonoBehaviour
 		ArrayList copy = new ArrayList (scheduledDamages);
 		foreach (DamageScheduledEvent e in copy) {
 			if(t - e.scheduledTime > this.delayTime) {
-				Debug.Log ("doing scheduled damage");
 				runEvent(e.scheduledEvent);
 				scheduledDamages.Remove(e);
 			}

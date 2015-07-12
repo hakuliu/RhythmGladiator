@@ -4,15 +4,11 @@ using System.Collections;
 public class EnemyMovement : MonoBehaviour
 {
     Transform player;
-    PlayerHealth playerHealth;
-    EnemyHealth enemyHealth;
 	Rigidbody enemyRBody;
 
     void Awake ()
     {
         player = GameObject.FindGameObjectWithTag ("Player").transform;
-        playerHealth = player.GetComponent <PlayerHealth> ();
-        enemyHealth = GetComponent <EnemyHealth> ();
 		enemyRBody = GetComponent<Rigidbody> ();
     }
 

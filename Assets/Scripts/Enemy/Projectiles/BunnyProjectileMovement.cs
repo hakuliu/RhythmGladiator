@@ -10,10 +10,9 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 
 	//game objects and scripts from outside
 	GameObject player;
-	GameObject floor;
-	PlayerHealth playerHealth;
 	Rigidbody body;
 	LineRenderer gunLine;
+	PlayerDelayedPosition poslookup;
 
 	//events variables
 	enum MovementState {Rising, Hovering, Shooting, Destroy};
@@ -32,10 +31,9 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 	{
 		movementState = MovementState.Rising;
 		player = GameObject.FindGameObjectWithTag ("Player");
-		floor = GameObject.FindGameObjectWithTag ("Floor");
+		poslookup = player.GetComponent<PlayerDelayedPosition> ();
 		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
 		damager = managers.GetComponent<DamageManager> ();
-		playerHealth = player.GetComponent <PlayerHealth> ();
 		gunLine = GetComponent <LineRenderer> ();
 		this.audios = GetComponent<AudioSource> ();
 		tracker = new BeatTracker ();
@@ -123,7 +121,7 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 	void setTargetToPlayer()
 	{
 		//i think Vec3 in C# is a struct so this is safe and will copy, won't reference.
-		targetLoc = player.transform.position;
+		targetLoc = poslookup.lookupPlayerPositionWithDelay ();
 		gunLine.enabled = true;
 		gunLine.SetPosition (0, transform.position);
 		gunLine.SetPosition (1, targetLoc);

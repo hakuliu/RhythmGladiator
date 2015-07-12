@@ -4,6 +4,7 @@ using System.Collections;
 public class BearAttack : MonoBehaviour
 {
 	public GameObject bomb;
+	private PlayerDelayedPosition poslookup;
 
 	BeatTracker track;
 	AudioSource audioSource;

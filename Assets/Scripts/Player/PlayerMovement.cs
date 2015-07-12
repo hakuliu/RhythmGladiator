@@ -22,15 +22,12 @@ public class PlayerMovement : MonoBehaviour
 	int floorMask;
 	float camRayLength = 100f;
 
-	GameObject floor;
-
 	void Awake()
 	{
 		floorMask = LayerMask.GetMask ("Floor");
 		anim = GetComponent<Animator> ();
 		playerRigidbody = GetComponent<Rigidbody> ();
 
-		floor = GameObject.FindGameObjectWithTag ("Floor");
 	}
 
 	void FixedUpdate()

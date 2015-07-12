@@ -7,9 +7,6 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 	public int damage = 15;
 	DamageManager damager;
 	BeatTracker tracker;
-	Rigidbody body;
-	Transform playertransform;
-	PlayerHealth playerHealth;
 	MeshRenderer meshrenderer;
 	Light redlight;
 	AudioSource audios;
@@ -21,12 +18,8 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 		tracker = new BeatTracker ();
 		assignTrack ();
 		tracker.Start ();
-		body = GetComponent<Rigidbody> ();
-		GameObject player = GameObject.FindGameObjectWithTag ("Player");
 		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
 		damager = managers.GetComponent<DamageManager> ();
-		playertransform = player.transform;
-		playerHealth = player.GetComponent <PlayerHealth> ();
 		this.meshrenderer = GetComponent<MeshRenderer> ();
 		redlight = GetComponent<Light> ();
 		this.audios = GetComponent<AudioSource> ();
