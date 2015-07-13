@@ -5,8 +5,8 @@ public class CameraFollow : MonoBehaviour {
 
 	public Transform target;
 	public float smoothing = 5f;
-	public float offsetBack = 5f;
-	public float offsetHeight = 2f;
+	public float offsetBack = 25f;
+	public float offsetHeight = 10f;
 
 	Vector3 offset;
 

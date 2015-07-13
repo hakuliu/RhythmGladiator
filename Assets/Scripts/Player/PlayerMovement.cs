@@ -2,9 +2,11 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-	public float speed = .75f;
-	public float speedDecay = 1.2f;
+	public float leapSpeed = .75f;
+	public float leapDecay = 1.2f;
+	public float walkSpeed = .3f;
 	public float turnrate = .05f;
+
 
 	float timeBetweenLeap = .33f;//s
 	float timerLeap = 0;
@@ -39,16 +41,23 @@ public class PlayerMovement : MonoBehaviour
 		float h = Input.GetAxisRaw ("Horizontal");
 		float v = Input.GetAxisRaw ("Vertical");
 		bool j = Input.GetKey (KeyCode.Space);
+		bool shift = Input.GetKey (KeyCode.LeftShift);//do right too?
+
 
 		if (j) {
 			Jump();
 		}
-		
-		this.SetMoveVec (h, v);
-		
-		if (leaping) {
-			MoveManual();
+		if (shift) {
+			Debug.Log("shift down");
+			Walk(h, v);
+		} else {
+			this.SetLeapVec (h, v);
+			
+			if (leaping) {
+				LeapMove();
+			}
 		}
+
 		this.Anim ();
 		this.Turn ();
 	}
@@ -63,10 +72,15 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 	}
-	void MoveManual()
+	void Walk(float h, float v) {
+		Vector3 movement = new Vector3(h, 0f, v);
+		movement = movement.normalized * walkSpeed;
+		playerRigidbody.MovePosition(transform.position + movement);
+	}
+	void LeapMove()
 	{
 		playerRigidbody.MovePosition(transform.position + movementh);
-		movementh /= speedDecay;
+		movementh /= leapDecay;
 		
 		if(movementh.magnitude <= .1f) {
 			movementh = Vector3.zero;
@@ -74,12 +88,12 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 
-	void SetMoveVec(float h, float v)
+	void SetLeapVec(float h, float v)
 	{
 		if (timerLeap >= timeBetweenLeap && leaping == false && (h != 0 || v != 0)) {
 			timerLeap = 0f;
 			movementh.Set (h, 0f, v);
-			movementh = movementh.normalized * speed;
+			movementh = movementh.normalized * leapSpeed;
 			leaping = true;
 		}
 	}
@@ -94,20 +108,6 @@ public class PlayerMovement : MonoBehaviour
 			Quaternion newRotation = Quaternion.LookRotation(playerToMouse);
 			playerRigidbody.MoveRotation(newRotation);
 		}
-
-//
-//		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
-//
-//		RaycastHit floorHit;
-//
-//		if(Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
-//		{
-//			Vector3 playerToMouse = floorHit.point - transform.position;
-//			playerToMouse.y = 0f;
-//
-//			Quaternion newRotation = Quaternion.LookRotation(playerToMouse);
-//			playerRigidbody.MoveRotation(newRotation);
-//		}
 	}
 
 	void Anim()
