@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
 	public float speed = .75f;
 	public float speedDecay = 1.2f;
+	public float turnrate = .05f;
 
 	float timeBetweenLeap = .33f;//s
 	float timerLeap = 0;
@@ -85,18 +86,28 @@ public class PlayerMovement : MonoBehaviour
 
 	void Turn()
 	{
-		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
-
-		RaycastHit floorHit;
-
-		if(Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
-		{
-			Vector3 playerToMouse = floorHit.point - transform.position;
-			playerToMouse.y = 0f;
-
+		float mousemove = Input.GetAxis ("Mouse X");
+		if (mousemove != 0) {
+			Vector3 forward = playerRigidbody.transform.TransformDirection(Vector3.forward);
+			Vector3 right = playerRigidbody.transform.TransformDirection(Vector3.right) * mousemove * turnrate;
+			Vector3 playerToMouse = forward + right;
 			Quaternion newRotation = Quaternion.LookRotation(playerToMouse);
 			playerRigidbody.MoveRotation(newRotation);
 		}
+
+//
+//		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
+//
+//		RaycastHit floorHit;
+//
+//		if(Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
+//		{
+//			Vector3 playerToMouse = floorHit.point - transform.position;
+//			playerToMouse.y = 0f;
+//
+//			Quaternion newRotation = Quaternion.LookRotation(playerToMouse);
+//			playerRigidbody.MoveRotation(newRotation);
+//		}
 	}
 
 	void Anim()
