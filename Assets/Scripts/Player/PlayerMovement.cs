@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
 
 	}
 	void Walk(float h, float v) {
-		Vector3 movement = new Vector3(h, 0f, v);
+		Vector3 movement = GetMovementDirection (h, v);
 		movement = movement.normalized * walkSpeed;
 		playerRigidbody.MovePosition(transform.position + movement);
 	}
@@ -92,12 +92,30 @@ public class PlayerMovement : MonoBehaviour
 	{
 		if (timerLeap >= timeBetweenLeap && leaping == false && (h != 0 || v != 0)) {
 			timerLeap = 0f;
-			movementh.Set (h, 0f, v);
+			movementh = GetMovementDirection(h, v);
 			movementh = movementh.normalized * leapSpeed;
 			leaping = true;
 		}
 	}
 
+	/// <summary>
+	/// Gets the movement direction. with respect to the player's facing
+	/// we also zero out the y component.
+	/// </summary>
+	/// <returns>The movement direction.</returns>
+	/// <param name="h">horizontal input</param>
+	/// <param name="v">vertical input</param>
+	Vector3 GetMovementDirection(float h, float v) {
+
+		Vector3 f = this.transform.TransformDirection (Vector3.forward);
+		Vector3 r = this.transform.TransformDirection (Vector3.right);
+
+		Vector3 rv = f * v + r * h;
+		rv.y = 0;
+		Debug.Log (rv.normalized);
+		return rv.normalized;
+	}
+		
 	void Turn()
 	{
 		float mousemove = Input.GetAxis ("Mouse X");
