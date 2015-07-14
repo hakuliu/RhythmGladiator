@@ -112,7 +112,7 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 		float[] deltas = new float[]{
 			4f,
 			4f,
-			2f
+			.5f
 		};
 
 		this.tracker.assignEvents (events, deltas);

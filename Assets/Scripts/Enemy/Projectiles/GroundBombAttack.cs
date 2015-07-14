@@ -3,14 +3,15 @@ using System.Collections;
 
 public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 {
-	public float closeEnoughToGround = .3f;
 	public int damage = 15;
+	public float explosiontime = .5f;
 	DamageManager damager;
 	BeatTracker tracker;
 	MeshRenderer meshrenderer;
 	Light redlight;
 	AudioSource audios;
 	Vector3 bombpos;
+	float exploded = -1f;
 
 	// Use this for initialization
 	void Start ()
@@ -29,7 +30,8 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 	// Update is called once per frame
 	void Update ()
 	{
-	
+		//this doesn't really need to be that accurate.
+		UpdateExplosion ();
 	}
 
 	void FixedUpdate ()
@@ -66,6 +68,15 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 		audios.Play ();
 		redlight.range = 20f;
 		damager.scheduleDamage(new GroundDamageEvent(this.damage, bombpos));
+		exploded = 0;
     }
+	void UpdateExplosion() {
+		if (exploded != -1) {
+			exploded += Time.deltaTime;
+			if(exploded >= this.explosiontime) {
+				Destroy (gameObject);
+			}
+		}
+	}
 }
 
