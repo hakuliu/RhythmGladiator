@@ -3,11 +3,10 @@
 public class PlayerShooting : MonoBehaviour
 {
     public int damagePerShot = 20;
-    public float timeBetweenBullets = 0.15f;
+    
     public float range = 100f;
 
 
-    float timer;
     Ray shootRay;
     RaycastHit shootHit;
     int shootableMask;
@@ -16,6 +15,7 @@ public class PlayerShooting : MonoBehaviour
     AudioSource gunAudio;
     Light gunLight;
     float effectsDisplayTime = 0.2f;
+	private PlayerVars globalvars;
 
 
     void Awake ()
@@ -25,19 +25,20 @@ public class PlayerShooting : MonoBehaviour
         gunLine = GetComponent <LineRenderer> ();
         gunAudio = GetComponent<AudioSource> ();
         gunLight = GetComponent<Light> ();
+		//this thing's attatched to gun barrel so i have to look up player...
+		GameObject player = GameObject.FindGameObjectWithTag ("Player");
+		globalvars = player.GetComponent<PlayerVars> ();
     }
 
 
     void Update ()
     {
-        timer += Time.deltaTime;
-
-		if(Input.GetButton ("Fire1") && timer >= timeBetweenBullets && Time.timeScale != 0)
+		if(Input.GetButton ("Fire1") && globalvars.CanAttack() && Time.timeScale != 0)
         {
             Shoot ();
         }
 
-        if(timer >= timeBetweenBullets * effectsDisplayTime)
+        if(globalvars.GlobalAttackTimer >= globalvars.timeBetweenGlobalAttacks * effectsDisplayTime)
         {
             DisableEffects ();
         }
@@ -53,7 +54,7 @@ public class PlayerShooting : MonoBehaviour
 
     void Shoot ()
     {
-        timer = 0f;
+		globalvars.resetGlobalAttack ();
 
         gunAudio.Play ();
 
