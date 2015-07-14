@@ -48,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
 			Jump();
 		}
 		if (shift) {
-			Debug.Log("shift down");
 			Walk(h, v);
 		} else {
 			this.SetLeapVec (h, v);
@@ -112,7 +111,6 @@ public class PlayerMovement : MonoBehaviour
 
 		Vector3 rv = f * v + r * h;
 		rv.y = 0;
-		Debug.Log (rv.normalized);
 		return rv.normalized;
 	}
 		
