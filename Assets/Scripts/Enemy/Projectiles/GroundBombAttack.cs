@@ -5,6 +5,8 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 {
 	public int damage = 15;
 	public float explosiontime = .5f;
+	public float startingRadius = 5f;
+	public float explodeRadius = 6f;
 	DamageManager damager;
 	BeatTracker tracker;
 	MeshRenderer meshrenderer;
@@ -23,6 +25,7 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 		damager = managers.GetComponent<DamageManager> ();
 		this.meshrenderer = GetComponent<MeshRenderer> ();
 		redlight = GetComponent<Light> ();
+		redlight.range = startingRadius;
 		this.audios = GetComponent<AudioSource> ();
 		this.bombpos = GetComponent<Transform> ().position;
 	}
@@ -66,8 +69,8 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 	void ScheduleAttack() {
 		this.meshrenderer.enabled = false;
 		audios.Play ();
-		redlight.range = 20f;
-		damager.scheduleDamage(new GroundDamageEvent(this.damage, bombpos));
+		redlight.range = 20;
+		damager.scheduleDamage(new GroundDamageEvent(this.damage, explodeRadius, bombpos));
 		exploded = 0;
     }
 	void UpdateExplosion() {

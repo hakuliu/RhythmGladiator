@@ -19,6 +19,7 @@ public class GroundDamageEvent : DamageEvent
 		Vector3 ongroundpos = playerTransform.position;
 		//we assume ground is at y = 0.
 		ongroundpos.y = 0;
+		Debug.Log(Vector3.Distance (ongroundpos, this.location));
 		if (radius <= 0 || Vector3.Distance (ongroundpos, this.location) <= radius) {
 			return playerTransform.position.y <= groundDamageThreshold;
 		}
