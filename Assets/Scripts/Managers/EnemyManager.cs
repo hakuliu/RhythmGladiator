@@ -14,7 +14,7 @@ public class EnemyManager : MonoBehaviour
 		enemyCount--;
 		if (enemyCount <= 0) {
 			int i = Application.loadedLevel;
-			Application.LoadLevel(i+1);
+			//Application.LoadLevel(i+1);
 		}
 	}
 }
