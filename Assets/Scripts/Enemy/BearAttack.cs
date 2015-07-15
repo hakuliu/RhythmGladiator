@@ -4,6 +4,7 @@ using System.Collections;
 public class BearAttack : MonoBehaviour
 {
 	public GameObject bomb;
+	public float beatOffset;
 	private PlayerDelayedPosition poslookup;
 
 	BeatTracker track;
@@ -42,6 +43,7 @@ public class BearAttack : MonoBehaviour
 		};
 		
 		track.assignEvents (events, deltas);
+		track.AdditionalOffset (beatOffset);
 	}
 
 	BeatEvent getAttackEvent()

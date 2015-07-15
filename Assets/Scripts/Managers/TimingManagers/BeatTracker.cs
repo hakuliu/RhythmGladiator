@@ -69,5 +69,19 @@ public class BeatTracker : BeatManager
 		}
 	}
 
+	/// <summary>
+	/// Inserts the offset to start of the track.
+	/// should be called before track has been started. if it has already started, we return false and don't do anything.
+	/// also fails and wont' do anything if there was no track assigned already.
+	/// </summary>
+	/// <returns><c>true</c>, if offset was inserted, <c>false</c> otherwise.</returns>
+	/// <param name="beatvalue">Beatvalue.</param>
+	public bool AdditionalOffset(float beatvalue) {
+		if (!started && events != null && deltas != null) {
+			deltas[0] += beatvalue;
+		}
+		return false;
+	}
+
 }
 
