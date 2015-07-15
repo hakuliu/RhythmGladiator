@@ -98,31 +98,34 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Gets the movement direction. with respect to the player's facing
+	/// Gets the movement direction.
 	/// we also zero out the y component.
 	/// </summary>
 	/// <returns>The movement direction.</returns>
 	/// <param name="h">horizontal input</param>
 	/// <param name="v">vertical input</param>
 	Vector3 GetMovementDirection(float h, float v) {
-
-		Vector3 f = this.transform.TransformDirection (Vector3.forward);
-		Vector3 r = this.transform.TransformDirection (Vector3.right);
-
-		Vector3 rv = f * v + r * h;
-		rv.y = 0;
+		//scrapped because i thought absolute control feels better.
+//		Vector3 f = this.transform.TransformDirection (Vector3.forward);
+//		Vector3 r = this.transform.TransformDirection (Vector3.right);
+//
+//		Vector3 rv = f * v + r * h;
+//		rv.y = 0;
+		Vector3 rv = new Vector3 (h, 0f, v);
 		return rv.normalized;
 	}
 		
 	void Turn()
 	{
-		float mousemove = Input.GetAxis ("Mouse X");
-		if (mousemove != 0) {
-			Vector3 forward = playerRigidbody.transform.TransformDirection(Vector3.forward);
-			Vector3 right = playerRigidbody.transform.TransformDirection(Vector3.right) * mousemove * turnrate;
-			Vector3 playerToMouse = forward + right;
-			Quaternion newRotation = Quaternion.LookRotation(playerToMouse);
-			playerRigidbody.MoveRotation(newRotation);
+		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit floorHit;
+
+		if (Physics.Raycast (camRay, out floorHit, camRayLength, floorMask)) {
+			Vector3 playerToMouse = floorHit.point - transform.position;
+			playerToMouse.y = 0f;
+
+			Quaternion newRotation = Quaternion.LookRotation (playerToMouse);
+			playerRigidbody.MoveRotation (newRotation);
 		}
 	}
 
