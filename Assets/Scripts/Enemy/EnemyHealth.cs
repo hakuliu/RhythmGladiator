@@ -7,10 +7,9 @@ public class EnemyHealth : MonoBehaviour
     public float sinkSpeed = 2.5f;
     public int scoreValue = 10;
     public AudioClip deathClip;
-	public EnemyManager enemyCounter;
 
-
-    Animator anim;
+	EnemyManager enemyCounter;
+	Animator anim;
     AudioSource enemyAudio;
     ParticleSystem hitParticles;
     CapsuleCollider capsuleCollider;
@@ -24,7 +23,8 @@ public class EnemyHealth : MonoBehaviour
         enemyAudio = GetComponent <AudioSource> ();
         hitParticles = GetComponentInChildren <ParticleSystem> ();
         capsuleCollider = GetComponent <CapsuleCollider> ();
-
+		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
+		enemyCounter = managers.GetComponent<EnemyManager> ();
         currentHealth = startingHealth;
     }
 
