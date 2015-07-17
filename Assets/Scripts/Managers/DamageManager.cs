@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DamageManager : MonoBehaviour
 {
-	public float delayTime = .3f;//seconds
+	public float defaultDelayTime = .3f;//seconds
 	public PlayerHealth playerHealthScript;
 	public Transform playerTransform;
 	private ArrayList scheduledDamages;
@@ -24,7 +24,7 @@ public class DamageManager : MonoBehaviour
 		//make a copy first, because the original arraylist will likely change.
 		ArrayList copy = new ArrayList (scheduledDamages);
 		foreach (DamageScheduledEvent e in copy) {
-			if(t - e.scheduledTime > this.delayTime) {
+			if(t - e.scheduledTime > e.scheduledDelay) {
 				runEvent(e.scheduledEvent);
 				scheduledDamages.Remove(e);
 			}
@@ -38,22 +38,28 @@ public class DamageManager : MonoBehaviour
 	}
 
 	public void scheduleDamage(DamageEvent e) {
-		DamageScheduledEvent s = new DamageScheduledEvent (Time.fixedTime, e);
+		DamageScheduledEvent s = new DamageScheduledEvent (Time.fixedTime, e, defaultDelayTime);
+		scheduledDamages.Add (s);
+	}
+	public void scheduleDamage(DamageEvent e, float customdelay) {
+		DamageScheduledEvent s = new DamageScheduledEvent (Time.fixedTime, e, customdelay);
 		scheduledDamages.Add (s);
 	}
 	private class DamageScheduledEvent {
 		
 		public float scheduledTime;
 		public DamageEvent scheduledEvent;
-		public DamageScheduledEvent(float t, DamageEvent e) {
+		public float scheduledDelay;
+		public DamageScheduledEvent(float t, DamageEvent e, float delay) {
 			this.scheduledTime = t;
 			this.scheduledEvent = e;
+			this.scheduledDelay = delay;
 		}
 		public override bool Equals (object obj)
 		{
 			if (obj is DamageScheduledEvent) {
 				DamageScheduledEvent other = (DamageScheduledEvent)obj;
-				if(this.scheduledTime == other.scheduledTime) {
+				if(this.scheduledTime == other.scheduledTime && this.scheduledDelay == other.scheduledDelay) {
 					//pointer equality is fine here, i think.
 					if(this.scheduledEvent == other.scheduledEvent) {
 						return true;

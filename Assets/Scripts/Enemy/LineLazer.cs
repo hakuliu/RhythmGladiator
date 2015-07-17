@@ -56,7 +56,7 @@ public class LineLazer : MonoBehaviour
 		liner.enabled = true;
 		liner.SetPosition (0, transform.position);
 		liner.SetPosition (1, forward);
-		damager.scheduleDamage (new LineDamageEvent (damageVal, this.transform.position, forward));
+		damager.scheduleDamage (new LineDamageEvent (damageVal, this.transform.position, forward), 0f);
 	}
 
 	DelegatedBeatEvent.DelegatedAction PewLambda() {
