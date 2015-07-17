@@ -71,4 +71,15 @@ public abstract class BeatManager
 	{
 		return (lastTime <= nextEventTime && nextEventTime < currentTime);
 	}
+
+	/// <summary>
+	/// uses the current BPM set by BeatManager to find how many frames a given time interval in beat will be.
+	/// Answer given in the FixedDeltaTime.
+	/// </summary>
+	/// <returns>The for beat.</returns>
+	/// <param name="beat">Beat.</param>
+	public static float FramesForBeat(float beat) {
+		float totaltime = beat * tickTime;
+		return totaltime / Time.fixedDeltaTime;
+	}
 }

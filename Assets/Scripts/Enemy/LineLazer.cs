@@ -39,12 +39,11 @@ public class LineLazer : MonoBehaviour
 	}
 
 	void PopulateTrack() {
-		BeatEvent[] events = new BeatEvent[] {
-			CommonEventFactory.getDelegatedEvent (PewLambda ()),
-			CommonEventFactory.getDelegatedEvent (PewLambda ()),
-			CommonEventFactory.getDelegatedEvent (PewLambda ()),
-			CommonEventFactory.getNoOp ()
-		};
+		BeatEvent[] events = new BeatEvent[deltas.Length];
+		for (int i = 0; i < events.Length; i++) {
+			events[i] = CommonEventFactory.getDelegatedEvent (PewLambda ());
+		}
+		events [events.Length - 1] = CommonEventFactory.getNoOp ();
 		track.assignEvents (events, deltas);
 	}
 
