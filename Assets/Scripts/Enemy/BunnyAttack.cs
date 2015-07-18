@@ -5,6 +5,8 @@ public class BunnyAttack : MonoBehaviour
 {
 	public GameObject projectile;
 	public AudioClip fireSound;
+	public float[] deltas = new float[]{
+		0f, 2f, 2f, 12f};
 
     Animator anim;
     GameObject player;
@@ -26,18 +28,12 @@ public class BunnyAttack : MonoBehaviour
     }
 
 	void assignTrack() {
-		BeatEvent[] events = new BeatEvent[]{
-			getAttackEvent (),
-			getAttackEvent (),
-			getAttackEvent (),
-			CommonEventFactory.getNoOp ()
-		};
-		float[] deltas = new float[]{
-			0f,//first offset actually gets ignored at loop, so that's why we got 5-beat noop still
-			2f,
-			2f,
-			12f
-		};
+		BeatEvent[] events = new BeatEvent[deltas.Length];
+		for(int i = 0 ; i < events.Length - 1; i++)
+		{
+			events[i] = getAttackEvent ();
+		}
+		events [events.Length - 1] = CommonEventFactory.getNoOp ();
 
 		track.assignEvents (events, deltas);
 	}
@@ -66,7 +62,7 @@ public class BunnyAttack : MonoBehaviour
 			Vector3 upabit = transform.TransformDirection(Vector3.up);
 
 			Vector3 rothelper = upabit;
-			if(attackCounter % 3 == 0) {
+			if(attackCounter % deltas.Length == 0) {
 				rothelper += transform.TransformDirection(Vector3.right)/3f;
 			} else if(attackCounter % 3 == 1) {
 				//do nothing, directly up
