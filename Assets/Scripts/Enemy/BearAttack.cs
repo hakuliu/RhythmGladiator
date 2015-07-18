@@ -5,11 +5,14 @@ public class BearAttack : MonoBehaviour
 {
 	public GameObject bomb;
 	public float beatOffset;
+	public float beatsBetweenAttack = 8f;
+	public float beatsTilDetonation = 4f;
 	private PlayerDelayedPosition poslookup;
 
 	BeatTracker track;
 	AudioSource audioSource;
 	Animator anim;
+	GameObject projectile;
 
 	// Use this for initialization
 	void Start ()
@@ -59,7 +62,10 @@ public class BearAttack : MonoBehaviour
 		Vector3 upabit = Vector3.up;
 		this.transform.TransformDirection (upabit);
 		upabit *= 1.3f;
-		Instantiate(bomb, this.transform.position + upabit, this.transform.rotation);
+
+		projectile = Instantiate(bomb, this.transform.position + upabit, this.transform.rotation) as GameObject;
+		GroundBombAttack b = projectile.GetComponent<GroundBombAttack> ();
+		b.setTrackDelaysAndStart (new float[]{beatsTilDetonation});
 		anim.SetTrigger("Fire");
 	}
 }

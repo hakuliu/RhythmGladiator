@@ -18,9 +18,6 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 	// Use this for initialization
 	void Start ()
 	{
-		tracker = new BeatTracker ();
-		assignTrack ();
-		tracker.Start ();
 		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
 		damager = managers.GetComponent<DamageManager> ();
 		this.meshrenderer = GetComponent<MeshRenderer> ();
@@ -28,6 +25,12 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 		redlight.range = startingRadius;
 		this.audios = GetComponent<AudioSource> ();
 		this.bombpos = GetComponent<Transform> ().position;
+	}
+
+	public void setTrackDelaysAndStart(float [] delays) {
+		tracker = new BeatTracker ();
+		assignTrack (delays);
+		tracker.Start ();
 	}
 	
 	// Update is called once per frame
@@ -42,14 +45,12 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 		tracker.FixedUpdate ();
 	}
 
-	void assignTrack() 
+	void assignTrack(float[] delays) 
 	{
 		BeatEvent[] events = new BeatEvent[]{
 			CommonEventFactory.getNextStateEvent(this),
 		};
-		float[] deltas = new float[]{
-			4f
-		};
+		float[] deltas = delays;
 		
 		this.tracker.assignEvents (events, deltas);
 	}
