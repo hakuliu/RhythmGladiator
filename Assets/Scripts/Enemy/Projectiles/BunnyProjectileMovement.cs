@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
+public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialStates
 {
 	public int attackDamage = 5;
 	public float damageRadius = .6f;
@@ -36,10 +36,6 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 		damager = managers.GetComponent<DamageManager> ();
 		gunLine = GetComponent <LineRenderer> ();
 		this.audios = GetComponent<AudioSource> ();
-		tracker = new BeatTracker ();
-		assignTrack (tracker);
-		tracker.Start ();
-
 
 		body = GetComponent<Rigidbody> ();
 	}
@@ -102,20 +98,23 @@ public class BunnyProjectileMovement : MonoBehaviour, IHasSequentialStates
 	/// and then proceed to destroy itself
 	/// </summary>
 	/// <param name="tracker">Tracker.</param>
-	void assignTrack(BeatTracker tracker) 
+	void assignTrack(float[] deltas) 
 	{
+
 		BeatEvent[] events = new BeatEvent[]{
 			CommonEventFactory.getNextStateEvent(this),
 			CommonEventFactory.getNextStateEvent(this),
 			CommonEventFactory.getNextStateEvent(this)
 		};
-		float[] deltas = new float[]{
-			4f,
-			4f,
-			.5f
-		};
 
-		this.tracker.assignEvents (events, deltas);
+
+		tracker.assignEvents (events, deltas);
+	}
+	public override void setTrackDelaysAndStart (float[] delays)
+	{
+		tracker = new BeatTracker ();
+		assignTrack (delays);
+		tracker.Start ();
 	}
 	
 	void setTargetToPlayer()

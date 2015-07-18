@@ -5,8 +5,8 @@ public class BunnyAttack : MonoBehaviour
 {
 	public GameObject projectile;
 	public AudioClip fireSound;
-	public float[] deltas = new float[]{
-		0f, 2f, 2f, 12f};
+	public float[] deltas = new float[]{0f, 2f, 2f, 12f};
+	public float[] projectileDeltas = new float[]{4f, 4f, .5f};
 
     Animator anim;
     GameObject player;
@@ -70,8 +70,10 @@ public class BunnyAttack : MonoBehaviour
 				rothelper += transform.TransformDirection(Vector3.left)/3f;
 			}
 			Quaternion pRot = Quaternion.LookRotation(rothelper);
-
-			Instantiate(projectile, this.transform.position + upabit, pRot);
+			GameObject pro;
+			pro = Instantiate(projectile, this.transform.position + upabit, pRot) as GameObject;
+			AbstractProjectileScript proscript = pro.GetComponent<AbstractProjectileScript>();
+			proscript.setTrackDelaysAndStart(projectileDeltas);
 			anim.SetTrigger("Fire");
 			attackCounter++;
         }

@@ -10,7 +10,6 @@ public class LineLazer : MonoBehaviour
 	float range = 100f;
 	LineRenderer liner;
 	BeatTracker track;
-	GameObject player;
 	float effecttimer = 0;
 	DamageManager damager;
 
@@ -19,7 +18,6 @@ public class LineLazer : MonoBehaviour
 	void Start ()
 	{
 		liner = GetComponent<LineRenderer> ();
-		player = GameObject.FindGameObjectWithTag ("Player");
 		track = new BeatTracker ();
 		PopulateTrack ();
 		BeatScheduler.ScheduleNextMeasure (new StartTrackEvent (track));

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
+public class GroundBombAttack : AbstractProjectileScript, IHasSequentialStates
 {
 	public int damage = 15;
 	public float explosiontime = .5f;
@@ -27,7 +27,7 @@ public class GroundBombAttack : MonoBehaviour, IHasSequentialStates
 		this.bombpos = GetComponent<Transform> ().position;
 	}
 
-	public void setTrackDelaysAndStart(float [] delays) {
+	public override void setTrackDelaysAndStart(float [] delays) {
 		tracker = new BeatTracker ();
 		assignTrack (delays);
 		tracker.Start ();
