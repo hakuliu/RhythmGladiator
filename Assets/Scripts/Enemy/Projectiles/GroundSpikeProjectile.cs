@@ -3,9 +3,15 @@ using System.Collections;
 
 public class GroundSpikeProjectile : AbstractProjectileScript, IHasSequentialStates
 {
+	public float decayTimeS = 1f;
+	public int damage = 20;
+	public float debrisDistanceInterval = 5f;
+	public GameObject debrisObject;
 	float totalChaseTime;
 	float currentTravelTime;
-
+	float decayTimer = 0;
+	bool decaying = false;
+	Vector3 lastDebrisPos;
 
 	// Use this for initialization
 	protected override void Start ()
@@ -17,6 +23,12 @@ public class GroundSpikeProjectile : AbstractProjectileScript, IHasSequentialSta
 	{
 		base.FixedUpdate ();
 		ChaseUpdate ();
+	}
+	protected override void Update ()
+	{
+		base.Update ();
+		DecayUpdate ();
+		DebrisUpdate ();
 	}
 
 	public override void setTrackDelaysAndStart (float[] delays)
@@ -39,6 +51,7 @@ public class GroundSpikeProjectile : AbstractProjectileScript, IHasSequentialSta
 
 	void IHasSequentialStates.goToNextState() {
 		//next state is definitely to schedule damage.
+		decaying = true;
 	}
 	void BeginChase() {
 		this.totalChaseTime = BeatManager.TimeForBeat (this.tracker.peekNextEventDelta ());
@@ -53,6 +66,23 @@ public class GroundSpikeProjectile : AbstractProjectileScript, IHasSequentialSta
 			Vector3 movement = (target - pos) / (timeleft / deltatime);
 			this.transform.position += movement;
 			this.currentTravelTime += deltatime;
+		}
+	}
+	void DecayUpdate() {
+		if(decaying) {
+			if (decayTimer >= this.decayTimeS) {
+				Destroy (this.gameObject);
+			}
+			decayTimer += Time.deltaTime;
+		}
+	}
+	void DebrisUpdate() {
+		if (this.currentTravelTime <= this.totalChaseTime) {
+			Vector3 pos = this.transform.position;
+			if(Vector3.Distance(lastDebrisPos, pos) >= this.debrisDistanceInterval) {
+				lastDebrisPos = pos;
+				Instantiate(debrisObject, this.transform.position, this.transform.rotation);
+			}
 		}
 	}
 }
