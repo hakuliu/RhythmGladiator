@@ -3,7 +3,9 @@ using System.Collections;
 
 public class GroundSpikerAttack : MonoBehaviour
 {
-	float beatsBetweenAttack;
+	public GameObject projectile;
+	public float beatsBetweenAttack = 4f;
+	public float beatOffset;
 	BeatTracker track;
 	GameObject player;
 	float effecttimer = 0;
@@ -32,7 +34,7 @@ public class GroundSpikerAttack : MonoBehaviour
 			CommonEventFactory.getNoOp ()
 		};
 		float[] deltas = new float[] {
-			0f,
+			beatOffset,
 			beatsBetweenAttack
 		};
 		track.assignEvents (events, deltas);

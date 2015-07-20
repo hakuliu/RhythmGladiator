@@ -64,7 +64,7 @@ public class BearAttack : MonoBehaviour
 		upabit *= 1.3f;
 
 		projectile = Instantiate(bomb, this.transform.position + upabit, this.transform.rotation) as GameObject;
-		GroundBombAttack b = projectile.GetComponent<AbstractProjectileScript> ();
+		AbstractProjectileScript b = projectile.GetComponent<AbstractProjectileScript> ();
 		b.setTrackDelaysAndStart (new float[]{beatsTilDetonation});
 		anim.SetTrigger("Fire");
 	}

@@ -54,15 +54,17 @@ public class BeatTracker : BeatManager
 				float nextEventTime = lastEventTime + this.deltas[nextIndex] * tickTime;
 				if(eventHappened(lastTime, timer, nextEventTime)) {
 					//do the event
-					this.events[nextIndex].doAction();
+					//the ordering of indexing is important here for peekNextEventDelta
 					lastEventTime = nextEventTime;
+					int doindex = nextIndex;
 					nextIndex++;
+					this.events[doindex].doAction();
 					if(loop && this.nextIndex >= this.events.Length) {
 						nextIndex = 0;
+						nextIndex++;
 						//if we're looping we gotta do the event right away.
 						//normally the last thing in event track is a no-op
-						this.events[nextIndex].doAction();
-						nextIndex++;
+						this.events[0].doAction();
 					}
 				}
 			}
@@ -81,6 +83,13 @@ public class BeatTracker : BeatManager
 			deltas[0] += beatvalue;
 		}
 		return false;
+	}
+	/// <summary>
+	/// note, the update mechanics *should* prevent overflow at the last index...
+	/// </summary>
+	/// <returns>The next event delta.</returns>
+	public float peekNextEventDelta() {
+		return deltas[this.nextIndex];
 	}
 
 }

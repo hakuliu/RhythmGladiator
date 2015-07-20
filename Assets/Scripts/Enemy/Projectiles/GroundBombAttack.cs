@@ -7,8 +7,7 @@ public class GroundBombAttack : AbstractProjectileScript, IHasSequentialStates
 	public float explosiontime = .5f;
 	public float startingRadius = 5f;
 	public float explodeRadius = 6f;
-	DamageManager damager;
-	BeatTracker tracker;
+
 	MeshRenderer meshrenderer;
 	Light redlight;
 	AudioSource audios;
@@ -16,10 +15,8 @@ public class GroundBombAttack : AbstractProjectileScript, IHasSequentialStates
 	float exploded = -1f;
 
 	// Use this for initialization
-	void Start ()
+	public override void ChildStart()
 	{
-		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
-		damager = managers.GetComponent<DamageManager> ();
 		this.meshrenderer = GetComponent<MeshRenderer> ();
 		redlight = GetComponent<Light> ();
 		redlight.range = startingRadius;
@@ -34,15 +31,10 @@ public class GroundBombAttack : AbstractProjectileScript, IHasSequentialStates
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	public override void ChildUpdate ()
 	{
 		//this doesn't really need to be that accurate.
 		UpdateExplosion ();
-	}
-
-	void FixedUpdate ()
-	{
-		tracker.FixedUpdate ();
 	}
 
 	void assignTrack(float[] delays) 

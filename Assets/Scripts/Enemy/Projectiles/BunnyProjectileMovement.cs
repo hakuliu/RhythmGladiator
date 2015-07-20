@@ -6,7 +6,6 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 	public int attackDamage = 5;
 	public float damageRadius = .6f;
 	public float destroyFromTargetRadius = 1f;
-	DamageManager damager;
 
 	//game objects and scripts from outside
 	GameObject player;
@@ -17,7 +16,6 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 	//events variables
 	enum MovementState {Rising, Hovering, Shooting, Destroy};
 	MovementState movementState;
-	BeatTracker tracker;
 
 
 	//some variables cached for movement behaviors
@@ -27,20 +25,18 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 	AudioSource audios;
 
 	// Use this for initialization
-	void Start ()
+	public override void ChildStart ()
 	{
 		movementState = MovementState.Rising;
 		player = GameObject.FindGameObjectWithTag ("Player");
 		poslookup = player.GetComponent<PlayerDelayedPosition> ();
-		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
-		damager = managers.GetComponent<DamageManager> ();
 		gunLine = GetComponent <LineRenderer> ();
 		this.audios = GetComponent<AudioSource> ();
 
 		body = GetComponent<Rigidbody> ();
 	}
 
-	void Update()
+	public override void ChildUpdate()
 	{
 		switch (movementState) {
 		case MovementState.Rising:
@@ -56,10 +52,6 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 			Destroy();
 			break;
 		}
-	}
-	void FixedUpdate ()
-	{
-		tracker.FixedUpdate ();
 	}
 
 	void Rise() 
