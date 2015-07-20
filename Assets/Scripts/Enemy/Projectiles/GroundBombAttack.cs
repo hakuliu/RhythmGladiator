@@ -15,8 +15,9 @@ public class GroundBombAttack : AbstractProjectileScript, IHasSequentialStates
 	float exploded = -1f;
 
 	// Use this for initialization
-	public override void ChildStart()
+	protected override void Start()
 	{
+		base.Start ();
 		this.meshrenderer = GetComponent<MeshRenderer> ();
 		redlight = GetComponent<Light> ();
 		redlight.range = startingRadius;
@@ -31,8 +32,9 @@ public class GroundBombAttack : AbstractProjectileScript, IHasSequentialStates
 	}
 	
 	// Update is called once per frame
-	public override void ChildUpdate ()
+	protected override void Update ()
 	{
+		base.Update ();
 		//this doesn't really need to be that accurate.
 		UpdateExplosion ();
 	}

@@ -7,14 +7,13 @@ public abstract class AbstractProjectileScript : MonoBehaviour
 	protected BeatTracker tracker;
 	protected bool noTrackOverride;
 
-	void Start() {
+	protected virtual void Start() {
 		noTrackOverride = false;
 		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
 		damager = managers.GetComponent<DamageManager> ();
-		ChildStart ();
 	}
 
-	void FixedUpdate() {
+	protected virtual void FixedUpdate() {
 		if (tracker != null) {
 			tracker.FixedUpdate ();
 		} else {
@@ -22,11 +21,9 @@ public abstract class AbstractProjectileScript : MonoBehaviour
 				throw new UnityException("Pojectile " + this.ToString() + " has no track. and cannot do physics update.");
 			}
 		}
-		ChildFixedUpdate ();
 	}
 
-	void Update() {
-		ChildUpdate ();
+	protected virtual void Update() {
 	}
 
 	public void setIgnoreMissingTrack(bool tf) {
@@ -35,9 +32,5 @@ public abstract class AbstractProjectileScript : MonoBehaviour
 
 	public abstract void setTrackDelaysAndStart(float [] delays);
 
-	//i leave these non abstract and empty in case you don't want to actually override em.
-	public virtual void ChildStart() {}
-	public virtual void ChildFixedUpdate() {}
-	public virtual void ChildUpdate() {}
 }
 

@@ -25,8 +25,9 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 	AudioSource audios;
 
 	// Use this for initialization
-	public override void ChildStart ()
+	protected override void Start ()
 	{
+		base.Start ();
 		movementState = MovementState.Rising;
 		player = GameObject.FindGameObjectWithTag ("Player");
 		poslookup = player.GetComponent<PlayerDelayedPosition> ();
@@ -36,8 +37,9 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 		body = GetComponent<Rigidbody> ();
 	}
 
-	public override void ChildUpdate()
+	protected override void Update()
 	{
+		base.Update ();
 		switch (movementState) {
 		case MovementState.Rising:
 			Rise ();

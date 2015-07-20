@@ -5,9 +5,9 @@ public class GroundSpikeProjectile : AbstractProjectileScript, IHasSequentialSta
 {
 
 	// Use this for initialization
-	void Start ()
+	protected override void Start ()
 	{
-	
+		base.Start ();
 	}
 	
 	// Update is called once per frame
