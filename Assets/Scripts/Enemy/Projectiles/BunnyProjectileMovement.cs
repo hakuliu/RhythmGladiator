@@ -8,10 +8,9 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 	public float destroyFromTargetRadius = 1f;
 
 	//game objects and scripts from outside
-	GameObject player;
+
 	Rigidbody body;
 	LineRenderer gunLine;
-	PlayerDelayedPosition poslookup;
 
 	//events variables
 	enum MovementState {Rising, Hovering, Shooting, Destroy};
@@ -29,8 +28,6 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 	{
 		base.Start ();
 		movementState = MovementState.Rising;
-		player = GameObject.FindGameObjectWithTag ("Player");
-		poslookup = player.GetComponent<PlayerDelayedPosition> ();
 		gunLine = GetComponent <LineRenderer> ();
 		this.audios = GetComponent<AudioSource> ();
 
@@ -114,7 +111,7 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 	void setTargetToPlayer()
 	{
 		//i think Vec3 in C# is a struct so this is safe and will copy, won't reference.
-		targetLoc = poslookup.lookupPlayerPositionWithDelay ();
+		targetLoc = playerposlookup.lookupPlayerPositionWithDelay ();
 		gunLine.enabled = true;
 		gunLine.SetPosition (0, transform.position);
 		gunLine.SetPosition (1, targetLoc);

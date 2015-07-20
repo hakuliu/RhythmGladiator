@@ -6,11 +6,16 @@ public abstract class AbstractProjectileScript : MonoBehaviour
 	protected DamageManager damager;
 	protected BeatTracker tracker;
 	protected bool noTrackOverride;
+	protected PlayerDelayedPosition playerposlookup;
+	protected GameObject player;
 
 	protected virtual void Start() {
 		noTrackOverride = false;
 		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
 		damager = managers.GetComponent<DamageManager> ();
+		
+		player = GameObject.FindGameObjectWithTag ("Player");
+		playerposlookup = player.GetComponent<PlayerDelayedPosition> ();
 	}
 
 	protected virtual void FixedUpdate() {

@@ -6,6 +6,7 @@ public class GroundSpikerAttack : MonoBehaviour
 	public GameObject projectile;
 	public float beatsBetweenAttack = 4f;
 	public float beatOffset;
+	public float spikeTravelTime = 2f;
 	BeatTracker track;
 	GameObject player;
 	float effecttimer = 0;
@@ -21,11 +22,9 @@ public class GroundSpikerAttack : MonoBehaviour
 		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
 		damager = managers.GetComponent<DamageManager> ();
 	}
-	
-	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
 	{
-	
+		track.FixedUpdate ();
 	}
 
 	void PopulateTrack() {
@@ -42,7 +41,9 @@ public class GroundSpikerAttack : MonoBehaviour
 
 	DelegatedBeatEvent.DelegatedAction GetSpikeLambda() {
 		return delegate () {
-
+			GameObject proj = Instantiate(projectile, this.transform.position, this.transform.rotation) as GameObject;
+			AbstractProjectileScript proscript = proj.GetComponent<AbstractProjectileScript>();
+			proscript.setTrackDelaysAndStart(new float[]{spikeTravelTime});
 		};
 	}
 }

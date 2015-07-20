@@ -82,4 +82,8 @@ public abstract class BeatManager
 		float totaltime = beat * tickTime;
 		return totaltime / Time.fixedDeltaTime;
 	}
+
+	public static float TimeForBeat(float beat) {
+		return beat * tickTime;
+	}
 }
