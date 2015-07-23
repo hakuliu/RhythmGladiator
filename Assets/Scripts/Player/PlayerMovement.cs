@@ -2,8 +2,7 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-	public float leapSpeed = .75f;
-	public float leapDecay = 1.2f;
+
 	public float walkSpeed = .3f;
 	public float turnrate = .05f;
 
@@ -20,42 +19,42 @@ public class PlayerMovement : MonoBehaviour
 	Vector3 movementh;
 	Vector3 movementv;
 
+	private PlayerVars globalvars;
 	Animator anim;
 	Rigidbody playerRigidbody;
 	int floorMask;
 	float camRayLength = 100f;
 
+	PlayerHorizontalMovementAction leapAction;
+
+
 	void Awake()
 	{
+		GameObject player = GameObject.FindGameObjectWithTag ("Player");
+		globalvars = player.GetComponent<PlayerVars> ();
 		floorMask = LayerMask.GetMask ("Floor");
 		anim = GetComponent<Animator> ();
 		playerRigidbody = GetComponent<Rigidbody> ();
-
+		leapAction = new PlayerHorizontalMovementAction (playerRigidbody);
 	}
 
 	void FixedUpdate()
 	{
-		timerJump = timerJump + Time.deltaTime;
-		timerLeap = timerLeap + Time.deltaTime;
-
-		float h = Input.GetAxisRaw ("Horizontal");
-		float v = Input.GetAxisRaw ("Vertical");
-		bool j = Input.GetKey (KeyCode.Space);
-		bool shift = Input.GetKey (KeyCode.LeftShift);//do right too?
-
-
-		if (j) {
-			Jump();
-		}
-		if (shift) {
-			Walk(h, v);
-		} else {
-			this.SetLeapVec (h, v);
+		if (!globalvars.busy) {
+			timerJump = timerJump + Time.deltaTime;
+			timerLeap = timerLeap + Time.deltaTime;
 			
-			if (leaping) {
-				LeapMove();
-			}
+			float h = Input.GetAxisRaw ("Horizontal");
+			float v = Input.GetAxisRaw ("Vertical");
+
+			bool shift = Input.GetKey (KeyCode.LeftShift);//do right too?
+
+			Walk(h, v);
+
+			leapAction.FixedUpdate();
+
 		}
+
 
 		this.Anim ();
 		this.Turn ();
@@ -76,26 +75,8 @@ public class PlayerMovement : MonoBehaviour
 		movement = movement.normalized * walkSpeed;
 		playerRigidbody.MovePosition(transform.position + movement);
 	}
-	void LeapMove()
-	{
-		playerRigidbody.MovePosition(transform.position + movementh);
-		movementh /= leapDecay;
-		
-		if(movementh.magnitude <= .1f) {
-			movementh = Vector3.zero;
-			leaping = false;
-		}
-	}
 
-	void SetLeapVec(float h, float v)
-	{
-		if (timerLeap >= timeBetweenLeap && leaping == false && (h != 0 || v != 0)) {
-			timerLeap = 0f;
-			movementh = GetMovementDirection(h, v);
-			movementh = movementh.normalized * leapSpeed;
-			leaping = true;
-		}
-	}
+	
 
 	/// <summary>
 	/// Gets the movement direction.
@@ -104,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 	/// <returns>The movement direction.</returns>
 	/// <param name="h">horizontal input</param>
 	/// <param name="v">vertical input</param>
-	Vector3 GetMovementDirection(float h, float v) {
+	public static Vector3 GetMovementDirection(float h, float v) {
 		//scrapped because i thought absolute control feels better.
 //		Vector3 f = this.transform.TransformDirection (Vector3.forward);
 //		Vector3 r = this.transform.TransformDirection (Vector3.right);

@@ -22,8 +22,8 @@ public abstract class AbstractHoldReleaseAction
 	}
 
 	public void Released() {
-		pressed = false;
 		if (pressed && pressedTime >= holdBeginThreshold * BeatManager.TickTime) {
+
 			float pre = (releaseOptimalBeat - preReleaseVariance) * BeatManager.TickTime;
 			float post = (releaseOptimalBeat + postReleaseVariance) * BeatManager.TickTime;
 			if(pressedTime >= pre && pressedTime <= post) {
@@ -31,9 +31,10 @@ public abstract class AbstractHoldReleaseAction
 			}
 			//go on recoil
 		}
+		pressed = false;
 	}
 
-	public void FixedUpdateTimer() {
+	public virtual void FixedUpdate() {
 		if (pressed) {
 			pressedTime += Time.fixedDeltaTime;
 		}

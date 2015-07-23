@@ -10,6 +10,7 @@ public class PlayerVars : MonoBehaviour
 	///to be replaced later by types of sword but for now do this.
 	public bool hasSword;
 	public bool hasGun;
+	public bool busy;//when busy, can't initiate most actions.
 
 
 	///shared among shooting and melee (and other future things?)
