@@ -6,11 +6,10 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 	private Vector3 leapMovement;
 	private float leapSpeed = .75f;
 	public float leapDecay = 1.2f;
-	private KeyCode key = KeyCode.Space;
 	private Rigidbody playerRigidbody;
 	private PlayerVars playervars;
 
-	public PlayerHorizontalMovementAction(Rigidbody player, PlayerVars vars) {
+	public PlayerHorizontalMovementAction(Rigidbody player, PlayerVars vars) : base(KeyCode.Space) {
 		this.playerRigidbody = player;
 		this.playervars = vars;
 	}
@@ -32,14 +31,6 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 	public override void FixedUpdate ()
 	{
 		base.FixedUpdate ();
-
-		if (Input.GetKeyDown (key)) {
-			Pressed();
-		}
-		if (Input.GetKeyUp (key)) {
-			Released();
-		}
-
 		LeapUpdate ();
 	}
 	protected override void applyHoldPhysicsBehavior ()

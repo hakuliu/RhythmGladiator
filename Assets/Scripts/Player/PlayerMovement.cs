@@ -11,10 +11,7 @@ public class PlayerMovement : MonoBehaviour
 	float timerLeap = 0;
 	bool leaping;
 
-	float timeBetweenJump = 1f;
-	float timerJump = 0;
-	float jumpForce = 30f;
-	bool jumping;
+
 
 	Vector3 movementh;
 	Vector3 movementv;
@@ -26,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 	float camRayLength = 100f;
 
 	PlayerHorizontalMovementAction leapAction;
-
+	PlayerVerticalMovementAction jumpAction;
 
 	void Awake()
 	{
@@ -36,12 +33,12 @@ public class PlayerMovement : MonoBehaviour
 		anim = GetComponent<Animator> ();
 		playerRigidbody = GetComponent<Rigidbody> ();
 		leapAction = new PlayerHorizontalMovementAction (playerRigidbody, globalvars);
+		jumpAction = new PlayerVerticalMovementAction (playerRigidbody, globalvars);
 	}
 
 	void FixedUpdate()
 	{
 		if (!globalvars.busy) {
-			timerJump = timerJump + Time.deltaTime;
 			timerLeap = timerLeap + Time.deltaTime;
 			
 			float h = Input.GetAxisRaw ("Horizontal");
@@ -52,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
 			Walk(h, v);
 
 			leapAction.FixedUpdate();
+			jumpAction.FixedUpdate();
 
 		}
 
@@ -60,16 +58,7 @@ public class PlayerMovement : MonoBehaviour
 		this.Turn ();
 	}
 
-	void Jump ()
-	{
-		if (timerJump >= timeBetweenJump) {
-			timerJump = 0;
-			Vector3 up = transform.TransformDirection(Vector3.up);
-			//playerRigidbody.MovePosition(transform.position + up * 5);
-			playerRigidbody.AddForce(up * jumpForce, ForceMode.Impulse);
-		}
 
-	}
 	void Walk(float h, float v) {
 		Vector3 movement = GetMovementDirection (h, v);
 		movement = movement.normalized * walkSpeed;

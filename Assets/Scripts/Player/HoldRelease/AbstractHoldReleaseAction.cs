@@ -14,6 +14,11 @@ public abstract class AbstractHoldReleaseAction
 
 	protected float pressedTime;
 	protected bool pressed;
+	private KeyCode key;
+
+	public AbstractHoldReleaseAction(KeyCode key) {
+		this.key = key;
+	}
 
 	public void Pressed() {
 		pressed = true;
@@ -41,6 +46,12 @@ public abstract class AbstractHoldReleaseAction
 				applyHoldPhysicsBehavior();
 			}
 			pressedTime += Time.fixedDeltaTime;
+		}
+		if (Input.GetKeyDown (key)) {
+			Pressed();
+		}
+		if (Input.GetKeyUp (key)) {
+			Released();
 		}
 	}
 	/// <summary>
