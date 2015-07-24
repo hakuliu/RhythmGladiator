@@ -29,18 +29,30 @@ public abstract class AbstractHoldReleaseAction
 			if(pressedTime >= pre && pressedTime <= post) {
 				doReleasedAction();
 			}
-			//go on recoil
+			removeHoldPhysicsBehavior();
+			applyRecoil ();
 		}
 		pressed = false;
 	}
 
 	public virtual void FixedUpdate() {
 		if (pressed) {
+			if(pressedTime >= holdBeginThreshold * BeatManager.TickTime) {
+				applyHoldPhysicsBehavior();
+			}
 			pressedTime += Time.fixedDeltaTime;
 		}
 	}
+	/// <summary>
+	/// for example, slow down player movement while holding.
+	/// </summary>
+	protected virtual void applyHoldPhysicsBehavior(){}
+	protected virtual void removeHoldPhysicsBehavior() {}
 
-	public abstract void doInitialAction ();
-	public abstract void doReleasedAction();
+	protected virtual void applyRecoil() {}
+
+	protected abstract void doInitialAction ();
+	protected abstract void doReleasedAction();
+
 }
 

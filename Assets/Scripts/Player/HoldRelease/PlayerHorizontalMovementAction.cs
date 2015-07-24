@@ -8,12 +8,14 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 	public float leapDecay = 1.2f;
 	private KeyCode key = KeyCode.Space;
 	private Rigidbody playerRigidbody;
+	private PlayerVars playervars;
 
-	public PlayerHorizontalMovementAction(Rigidbody player) {
+	public PlayerHorizontalMovementAction(Rigidbody player, PlayerVars vars) {
 		this.playerRigidbody = player;
+		this.playervars = vars;
 	}
 
-	public override void doInitialAction ()
+	protected override void doInitialAction ()
 	{
 		float h = Input.GetAxisRaw ("Horizontal");
 		float v = Input.GetAxisRaw ("Vertical");
@@ -22,7 +24,7 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 		}
 
 	}
-	public override void doReleasedAction ()
+	protected override void doReleasedAction ()
 	{
 		//experimental
 		Debug.Log ("rawr");
@@ -39,6 +41,14 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 		}
 
 		LeapUpdate ();
+	}
+	protected override void applyHoldPhysicsBehavior ()
+	{
+		playervars.playerMovementModifier = .5f;
+	}
+	protected override void removeHoldPhysicsBehavior ()
+	{
+		playervars.playerMovementModifier = 1f;
 	}
 
 	void SetLeapVec(float h, float v)
@@ -61,5 +71,6 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 			}
 		}
 	}
+
 }
 

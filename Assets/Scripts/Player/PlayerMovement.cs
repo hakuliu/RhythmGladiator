@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 		floorMask = LayerMask.GetMask ("Floor");
 		anim = GetComponent<Animator> ();
 		playerRigidbody = GetComponent<Rigidbody> ();
-		leapAction = new PlayerHorizontalMovementAction (playerRigidbody);
+		leapAction = new PlayerHorizontalMovementAction (playerRigidbody, globalvars);
 	}
 
 	void FixedUpdate()
@@ -73,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
 	void Walk(float h, float v) {
 		Vector3 movement = GetMovementDirection (h, v);
 		movement = movement.normalized * walkSpeed;
+		movement = movement * globalvars.playerMovementModifier;
 		playerRigidbody.MovePosition(transform.position + movement);
 	}
 
