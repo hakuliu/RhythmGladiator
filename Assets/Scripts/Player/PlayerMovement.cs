@@ -44,8 +44,6 @@ public class PlayerMovement : MonoBehaviour
 			float h = Input.GetAxisRaw ("Horizontal");
 			float v = Input.GetAxisRaw ("Vertical");
 
-			bool shift = Input.GetKey (KeyCode.LeftShift);//do right too?
-
 			Walk(h, v);
 
 			leapAction.FixedUpdate();
