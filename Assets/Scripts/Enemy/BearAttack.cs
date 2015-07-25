@@ -7,7 +7,6 @@ public class BearAttack : MonoBehaviour
 	public float beatOffset;
 	public float beatsBetweenAttack = 8f;
 	public float beatsTilDetonation = 4f;
-	private PlayerDelayedPosition poslookup;
 
 	BeatTracker track;
 	AudioSource audioSource;
