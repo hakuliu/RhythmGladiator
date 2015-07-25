@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ShieldAction : AbstractHoldReleaseAction
 {
-	public ShieldAction() : base(KeyCode.Mouse1 {
+	public ShieldAction() : base(KeyCode.Mouse1) {
 
 	}
 	protected override void doInitialAction ()
