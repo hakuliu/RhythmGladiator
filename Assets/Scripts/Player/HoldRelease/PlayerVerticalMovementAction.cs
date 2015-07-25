@@ -18,8 +18,6 @@ public class PlayerVerticalMovementAction : AbstractHoldReleaseAction
 	protected override void doInitialAction ()
 	{
 		Jump();
-		
-		
 	}
 	protected override void doReleasedAction ()
 	{
