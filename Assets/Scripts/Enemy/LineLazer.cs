@@ -6,12 +6,14 @@ public class LineLazer : MonoBehaviour
 	public float lazerEffectTime = .1f;
 	public int damageVal = 10;
 	public float[] deltas = new float[] {0f, 2f, 2f, 2f};
+	public AudioClip[] shootingSounds;
 
 	float range = 100f;
 	LineRenderer liner;
 	BeatTracker track;
 	float effecttimer = 0;
 	DamageManager damager;
+	SoundRandomizer soundpicker;
 
 
 	// Use this for initialization
@@ -23,7 +25,8 @@ public class LineLazer : MonoBehaviour
 		BeatScheduler.ScheduleNextMeasure (new StartTrackEvent (track));
 		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
 		damager = managers.GetComponent<DamageManager> ();
-
+		AudioSource audios = GetComponent<AudioSource> ();
+		soundpicker = new SoundRandomizer (audios, shootingSounds);
 	}
 	
 	// Update is called once per frame
@@ -55,6 +58,7 @@ public class LineLazer : MonoBehaviour
 		liner.SetPosition (0, transform.position);
 		liner.SetPosition (1, forward);
 		damager.scheduleDamage (new LineDamageEvent (damageVal, this.transform.position, forward), 0f);
+		soundpicker.PlayNext ();
 	}
 
 	DelegatedBeatEvent.DelegatedAction PewLambda() {
