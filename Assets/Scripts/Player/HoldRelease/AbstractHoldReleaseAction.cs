@@ -62,6 +62,9 @@ public abstract class AbstractHoldReleaseAction
 
 	protected virtual void applyRecoil() {}
 
+	protected virtual void BeginHoldEffect() {}
+	protected virtual void HoldEffectUpdate() {}
+
 	protected abstract void doInitialAction ();
 	protected abstract void doReleasedAction();
 

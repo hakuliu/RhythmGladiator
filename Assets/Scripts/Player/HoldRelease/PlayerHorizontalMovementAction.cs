@@ -8,10 +8,13 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 	public float leapDecay = 1.2f;
 	private Rigidbody playerRigidbody;
 	private PlayerVars playervars;
+	private int floorMask;
+	private float camRayLength = 100f;
 
 	public PlayerHorizontalMovementAction(Rigidbody player, PlayerVars vars) : base(KeyCode.Space) {
 		this.playerRigidbody = player;
 		this.playervars = vars;
+		this.floorMask = LayerMask.GetMask ("Floor");
 	}
 
 	protected override void doInitialAction ()
@@ -25,8 +28,7 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 	}
 	protected override void doReleasedAction ()
 	{
-		//experimental
-		Debug.Log ("rawr");
+		Blink ();
 	}
 	public override void FixedUpdate ()
 	{
@@ -62,6 +64,17 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 			}
 		}
 	}
+	void Blink() {
+		Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit floorHit;
+		
+		if (Physics.Raycast (camRay, out floorHit, camRayLength, floorMask)) {
+			Vector3 playerToMouse = floorHit.point - playerRigidbody.transform.position;
 
+			Vector3 toTarget = playerToMouse.normalized * playervars.blinkRange;
+			Vector3 targetPos = toTarget + playerRigidbody.transform.position;
+			playerRigidbody.MovePosition(targetPos);
+		}
+	}
 }
 

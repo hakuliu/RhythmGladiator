@@ -12,6 +12,8 @@ public class PlayerVars : MonoBehaviour
 	public bool hasGun;
 	public bool busy;//when busy, can't initiate most actions.
 	public float playerMovementModifier = 1f;
+	public Projector playerRangeIndicator;
+	public float blinkRange = 7f;
 
 
 	///shared among shooting and melee (and other future things?)
