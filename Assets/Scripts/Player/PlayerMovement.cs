@@ -56,6 +56,10 @@ public class PlayerMovement : MonoBehaviour
 		this.Turn ();
 	}
 
+	void Update() {
+		leapAction.Update ();
+	}
+
 
 	void Walk(float h, float v) {
 		Vector3 movement = GetMovementDirection (h, v);

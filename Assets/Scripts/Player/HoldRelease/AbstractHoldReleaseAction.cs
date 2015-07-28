@@ -5,9 +5,9 @@ public abstract class AbstractHoldReleaseAction
 {
 	//adjust to make engine feel better?
 	//time measurements are all in beats rather than seconds.
-	private static float preReleaseVariance = .2f;
-	private static float postReleaseVariance = .3f;
-	private static float holdBeginThreshold = .3f;
+	protected static float preReleaseVariance = .2f;
+	protected static float postReleaseVariance = .3f;
+	protected static float holdBeginThreshold = .3f;
 
 	public float releaseOptimalBeat = 2f;
 
@@ -15,6 +15,7 @@ public abstract class AbstractHoldReleaseAction
 	protected float pressedTime;
 	protected bool pressed;
 	private KeyCode key;
+	private bool held = false;
 
 	public AbstractHoldReleaseAction(KeyCode key) {
 		this.key = key;
@@ -27,6 +28,7 @@ public abstract class AbstractHoldReleaseAction
 	}
 
 	public void Released() {
+		held = false;
 		if (pressed && pressedTime >= holdBeginThreshold * BeatManager.TickTime) {
 
 			float pre = (releaseOptimalBeat - preReleaseVariance) * BeatManager.TickTime;
@@ -35,6 +37,7 @@ public abstract class AbstractHoldReleaseAction
 				doReleasedAction();
 			}
 			removeHoldPhysicsBehavior();
+			EndHoldEffect();
 			applyRecoil ();
 		}
 		pressed = false;
@@ -42,8 +45,10 @@ public abstract class AbstractHoldReleaseAction
 
 	public virtual void FixedUpdate() {
 		if (pressed) {
-			if(pressedTime >= holdBeginThreshold * BeatManager.TickTime) {
+			if(pressedTime >= holdBeginThreshold * BeatManager.TickTime && !held) {
+				held = true;
 				applyHoldPhysicsBehavior();
+				BeginHoldEffect();
 			}
 			pressedTime += Time.fixedDeltaTime;
 		}
@@ -53,6 +58,9 @@ public abstract class AbstractHoldReleaseAction
 		if (Input.GetKeyUp (key)) {
 			Released();
 		}
+	}
+	public virtual void Update() {
+		HoldEffectUpdate ();
 	}
 	/// <summary>
 	/// for example, slow down player movement while holding.
@@ -64,6 +72,7 @@ public abstract class AbstractHoldReleaseAction
 
 	protected virtual void BeginHoldEffect() {}
 	protected virtual void HoldEffectUpdate() {}
+	protected virtual void EndHoldEffect() {}
 
 	protected abstract void doInitialAction ();
 	protected abstract void doReleasedAction();

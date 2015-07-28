@@ -11,6 +11,8 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 	private int floorMask;
 	private float camRayLength = 100f;
 
+	private float holdTimer;
+
 	public PlayerHorizontalMovementAction(Rigidbody player, PlayerVars vars) : base(KeyCode.Space) {
 		this.playerRigidbody = player;
 		this.playervars = vars;
@@ -42,6 +44,41 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 	protected override void removeHoldPhysicsBehavior ()
 	{
 		playervars.playerMovementModifier = 1f;
+	}
+
+	protected override void BeginHoldEffect ()
+	{
+		base.BeginHoldEffect ();
+		holdTimer = 0;
+		Projector indicator = playervars.playerRangeIndicator;
+		indicator.orthographicSize = playervars.blinkRange;
+		indicator.transform.position = new Vector3(playerRigidbody.transform.position.x , playervars.RangeIndicatorHeight, playerRigidbody.transform.position.z);
+		indicator.enabled = true;
+	}
+
+	protected override void EndHoldEffect ()
+	{
+		base.EndHoldEffect ();
+		Projector indicator = playervars.playerRangeIndicator;
+		indicator.enabled = false;
+	}
+
+	protected override void HoldEffectUpdate ()
+	{
+		base.HoldEffectUpdate ();
+		holdTimer += Time.deltaTime;
+		Projector indicator = playervars.playerRangeIndicator;
+		float optimalThresh = (this.releaseOptimalBeat - holdBeginThreshold) * BeatManager.TickTime;
+		float releaseThresh = postReleaseVariance * BeatManager.TickTime;
+		if (holdTimer < optimalThresh) {
+			float ratio = holdTimer / optimalThresh;
+			indicator.transform.position = new Vector3 (playerRigidbody.transform.position.x, playervars.RangeIndicatorHeight * (1 - ratio), playerRigidbody.transform.position.z);
+		} else if (holdTimer < optimalThresh + releaseThresh) {
+			float ratio = (holdTimer - optimalThresh) / releaseThresh;
+			indicator.transform.position = new Vector3 (playerRigidbody.transform.position.x, playervars.RangeIndicatorHeight * (ratio), playerRigidbody.transform.position.z);
+		} else {
+			EndHoldEffect();
+		}
 	}
 
 	void SetLeapVec(float h, float v)
