@@ -1,33 +1,26 @@
 using UnityEngine;
 using System.Collections;
 
-public class BunnyAttack : MonoBehaviour
+public class BunnyAttack : AbstractEnemyAttack
 {
 	public GameObject projectile;
 	public AudioClip fireSound;
 	public float[] deltas = new float[]{0f, 2f, 2f, 12f};
 	public float[] projectileDeltas = new float[]{4f, 4f, .5f};
 
-    Animator anim;
-    GameObject player;
     PlayerHealth playerHealth;
-	BeatTracker track;
 	int attackCounter;//used to determine which rotation to fire at.
-	AudioSource audioSource;
 
 
-    void Awake ()
-    {
-        player = GameObject.FindGameObjectWithTag ("Player");
+    protected override void Start ()
+	{
+		base.Start ();
         playerHealth = player.GetComponent <PlayerHealth> ();
-		audioSource = GetComponent <AudioSource> ();
-        anim = GetComponent <Animator> ();
-		track = new BeatTracker ();
-		assignTrack ();
 		BeatScheduler.ScheduleNextMeasure (new StartTrackEvent (track));
     }
 
-	void assignTrack() {
+	protected override void assignTrack ()
+	{
 		BeatEvent[] events = new BeatEvent[deltas.Length];
 		for(int i = 0 ; i < events.Length - 1; i++)
 		{
@@ -44,14 +37,6 @@ public class BunnyAttack : MonoBehaviour
 			Attack ();
 		});
 	}
-
-
-
-    void FixedUpdate ()
-    {
-		track.FixedUpdate ();
-    }
-
 
     void Attack ()
     {

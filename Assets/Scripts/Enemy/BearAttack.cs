@@ -1,40 +1,25 @@
 using UnityEngine;
 using System.Collections;
 
-public class BearAttack : MonoBehaviour
+public class BearAttack : AbstractEnemyAttack
 {
 	public GameObject bomb;
 	public float beatOffset;
 	public float beatsBetweenAttack = 8f;
 	public float beatsTilDetonation = 4f;
 
-	BeatTracker track;
-	AudioSource audioSource;
-	Animator anim;
 	GameObject projectile;
 
 	// Use this for initialization
-	void Start ()
+	protected override void Start ()
 	{
-		track = new BeatTracker ();
-		assignTrack ();
+		base.Start ();
 		BeatScheduler.ScheduleNextMeasure (new StartTrackEvent (track));
-		audioSource = GetComponent <AudioSource> ();
-		anim = GetComponent <Animator> ();
 	}
 	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
 
-	void FixedUpdate ()
-	{
-		track.FixedUpdate ();
-	}
 
-	void assignTrack() {
+	protected override void assignTrack() {
 		BeatEvent[] events = new BeatEvent[]{
 			getAttackEvent (),
 			CommonEventFactory.getNoOp ()

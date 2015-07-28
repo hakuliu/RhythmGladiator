@@ -1,33 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class GroundSpikerAttack : MonoBehaviour
+public class GroundSpikerAttack : AbstractEnemyAttack
 {
 	public GameObject projectile;
 	public float beatsBetweenAttack = 4f;
 	public float beatOffset;
 	public float spikeTravelTime = 2f;
-	BeatTracker track;
-	GameObject player;
 	float effecttimer = 0;
-	DamageManager damager;
 
 	// Use this for initialization
-	void Start ()
+	protected override void Start ()
 	{
-		player = GameObject.FindGameObjectWithTag ("Player");
-		track = new BeatTracker ();
-		PopulateTrack ();
+		base.Start ();
 		BeatScheduler.ScheduleNextMeasure (new StartTrackEvent (track));
-		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
-		damager = managers.GetComponent<DamageManager> ();
-	}
-	void FixedUpdate ()
-	{
-		track.FixedUpdate ();
 	}
 
-	void PopulateTrack() {
+	protected override void assignTrack ()
+	{
 		BeatEvent[] events = new BeatEvent[] {
 			CommonEventFactory.getDelegatedEvent (GetSpikeLambda()),
 			CommonEventFactory.getNoOp ()

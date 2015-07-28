@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class LineLazer : MonoBehaviour
+public class LineLazer : AbstractEnemyAttack
 {
 	public float lazerEffectTime = .1f;
 	public int damageVal = 10;
@@ -12,34 +12,30 @@ public class LineLazer : MonoBehaviour
 	LineRenderer liner;
 	BeatTracker track;
 	float effecttimer = 0;
-	DamageManager damager;
 	SoundRandomizer soundpicker;
 
 
 	// Use this for initialization
-	void Start ()
+	protected override void Start ()
 	{
+		base.Start ();
 		liner = GetComponent<LineRenderer> ();
-		track = new BeatTracker ();
-		PopulateTrack ();
 		BeatScheduler.ScheduleNextMeasure (new StartTrackEvent (track));
-		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
-		damager = managers.GetComponent<DamageManager> ();
-		AudioSource audios = GetComponent<AudioSource> ();
-		soundpicker = new SoundRandomizer (audios, shootingSounds);
+		soundpicker = new SoundRandomizer (audioSource, shootingSounds);
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate ()
+	protected override void FixedUpdate ()
 	{
-		track.FixedUpdate ();
+		base.FixedUpdate ();
 		effecttimer += Time.fixedDeltaTime;
 		if (effecttimer >= lazerEffectTime) {
 			liner.enabled = false;
 		}
 	}
 
-	void PopulateTrack() {
+	protected override void assignTrack ()
+	{
 		BeatEvent[] events = new BeatEvent[deltas.Length];
 		for (int i = 0; i < events.Length; i++) {
 			events[i] = CommonEventFactory.getDelegatedEvent (PewLambda ());
