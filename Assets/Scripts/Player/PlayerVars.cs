@@ -29,8 +29,10 @@ public class PlayerVars : MonoBehaviour
 	public bool CanAttack() {
 		return globalAttackTimer >= timeBetweenGlobalAttacks;
 	}
-	public float rangeIndicatorHeight() {
-		return playerRangeIndicator.farClipPlane - playerRangeIndicator.nearClipPlane;
+	public float RangeIndicatorHeight {
+		get{
+			return playerRangeIndicator.farClipPlane - playerRangeIndicator.nearClipPlane;
+		}
 	}
 
 	/// <summary>
