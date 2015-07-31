@@ -10,7 +10,6 @@ public class LineLazer : AbstractEnemyAttack
 
 	float range = 100f;
 	LineRenderer liner;
-	BeatTracker track;
 	float effecttimer = 0;
 	SoundRandomizer soundpicker;
 
