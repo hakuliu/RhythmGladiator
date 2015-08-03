@@ -4,10 +4,13 @@ using System.Collections;
 public class CannonAttack : AbstractSingleAttack
 {
 	public float heightoffset = .2f;
+	public AudioClip[] shootingSounds;
+	SoundRandomizer soundpicker;
 	protected override void Start ()
 	{
 		base.Start ();
 		BeatScheduler.ScheduleNextMeasure (new StartTrackEvent (track));
+		soundpicker = new SoundRandomizer (audioSource, shootingSounds);
 	}
 
 	protected override void Attack ()
@@ -19,6 +22,7 @@ public class CannonAttack : AbstractSingleAttack
 		GameObject projectileinstance = Instantiate(projectile, this.transform.position + upabit, this.transform.rotation) as GameObject;
 		AbstractProjectileScript b = projectileinstance.GetComponent<AbstractProjectileScript> ();
 		b.setTrackDelaysAndStart (new float[]{4f});
+		soundpicker.PlayNext ();
 	}
 }
 
