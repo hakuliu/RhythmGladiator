@@ -52,6 +52,7 @@ public class CannonHomingProjectile : AbstractProjectileScript, IHasSequentialSt
 	}
 
 	void IHasSequentialStates.goToNextState() {
+		Destroy (gameObject);
 	}
 	
 	void OnTriggerEnter(Collider col) {
