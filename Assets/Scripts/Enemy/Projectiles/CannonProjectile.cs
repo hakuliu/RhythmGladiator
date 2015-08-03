@@ -41,12 +41,19 @@ public class CannonProjectile : AbstractProjectileScript, IHasSequentialStates
 		float frames = totalChaseTime / Time.fixedDeltaTime;
 
 		velocity = playerposlookup.lookupPlayerPositionWithDelay () - this.transform.position;
+		velocity.y = 0;
 		velocity = velocity / frames;
 	}
 	void TravelUpdate() {
 		this.transform.position = this.transform.position + velocity;
 	}
 	void IHasSequentialStates.goToNextState() {
+	}
+
+	void OnTriggerEnter(Collider col) {
+		if(col == this.player.GetComponent<CapsuleCollider>()) {
+
+		}
 	}
 }
 
