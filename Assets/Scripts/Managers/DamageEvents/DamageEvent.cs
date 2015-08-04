@@ -5,6 +5,11 @@ public abstract class DamageEvent
 {
 	protected int damageVal;
 	protected Vector3 location;
+	public Vector3 Location {
+		get {
+			return location;
+		}
+	}
 	public int Value {
 		get {
 			return damageVal;

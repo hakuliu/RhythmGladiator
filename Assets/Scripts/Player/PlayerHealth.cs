@@ -23,7 +23,7 @@ public class PlayerHealth : MonoBehaviour
     bool damaged;
 	float damageTimer;
 	float timeToRegenShield = 6f;
-
+	ShieldAction shieldAction;
 
     void Awake ()
     {
@@ -32,6 +32,7 @@ public class PlayerHealth : MonoBehaviour
         playerMovement = GetComponent <PlayerMovement> ();
         currentHealth = startingHealth;
 		currentShield = startingShield;
+		shieldAction = new ShieldAction ();
     }
 
 
@@ -49,6 +50,9 @@ public class PlayerHealth : MonoBehaviour
 		checkAndRegenShield ();
         damaged = false;
     }
+	void FixedUpdate() {
+		shieldAction.FixedUpdate ();
+	}
 
 	private void checkAndRegenShield() 
 	{
@@ -58,8 +62,13 @@ public class PlayerHealth : MonoBehaviour
 		}
 	}
 	public void HandleDamageEvent(DamageEvent e) {
-		TakeDamage (e.Value);
-		e.DamageReturn ();
+		if (shieldAction.shouldTakeDamage (e.Location)) {
+			TakeDamage (e.Value);
+		}
+		if(shieldAction.shouldReflect(e.Location)){
+			e.DamageReturn ();
+		}
+		
 	}
     private void TakeDamage (int amount)
     {
