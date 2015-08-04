@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class CannonProjectile : AbstractProjectileScript, IHasSequentialStates
+public class CannonProjectile : AbstractReturnableProjectile, IHasSequentialStates
 {
 	float totalChaseTime;
 	float currentTravelTime;
@@ -54,6 +54,10 @@ public class CannonProjectile : AbstractProjectileScript, IHasSequentialStates
 		if(col == this.player.GetComponent<CapsuleCollider>()) {
 
 		}
+	}
+	public override void ReturnProjectile ()
+	{
+
 	}
 }
 

@@ -89,7 +89,11 @@ public class BeatTracker : BeatManager
 	/// </summary>
 	/// <returns>The next event delta.</returns>
 	public float peekNextEventDelta() {
-		return deltas[this.nextIndex];
+		if (nextIndex < this.deltas.Length) {
+			return deltas [this.nextIndex];
+		} else {
+			return 0;
+		}
 	}
 
 }

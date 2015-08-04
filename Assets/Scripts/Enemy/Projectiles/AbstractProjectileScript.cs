@@ -9,6 +9,7 @@ public abstract class AbstractProjectileScript : MonoBehaviour
 	protected PlayerDelayedPosition playerposlookup;
 	protected GameObject player;
 
+
 	protected virtual void Start() {
 		noTrackOverride = false;
 		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");

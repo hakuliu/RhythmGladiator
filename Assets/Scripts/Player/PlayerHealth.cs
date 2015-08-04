@@ -59,6 +59,7 @@ public class PlayerHealth : MonoBehaviour
 	}
 	public void HandleDamageEvent(DamageEvent e) {
 		TakeDamage (e.Value);
+		e.DamageReturn ();
 	}
     private void TakeDamage (int amount)
     {

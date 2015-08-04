@@ -17,5 +17,6 @@ public abstract class DamageEvent
 	}
 
 	public abstract bool shouldPlayerHurt(Transform playerTransform);
+	public virtual void DamageReturn() {}
 }
 

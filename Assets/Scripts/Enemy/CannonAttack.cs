@@ -21,8 +21,9 @@ public class CannonAttack : AbstractSingleAttack
 		upabit = upabit.normalized * heightoffset;
 		
 		GameObject projectileinstance = Instantiate(projectile, this.transform.position + upabit, this.transform.rotation) as GameObject;
-		AbstractProjectileScript b = projectileinstance.GetComponent<AbstractProjectileScript> ();
+		AbstractReturnableProjectile b = projectileinstance.GetComponent<AbstractReturnableProjectile> ();
 		b.setTrackDelaysAndStart (new float[]{beatsToHit});
+		b.setSource (this.gameObject);
 		soundpicker.PlayNext ();
 	}
 }
