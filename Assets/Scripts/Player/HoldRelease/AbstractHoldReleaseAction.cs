@@ -21,13 +21,13 @@ public abstract class AbstractHoldReleaseAction
 		this.key = key;
 	}
 
-	public void Pressed() {
+	public virtual void Pressed() {
 		pressed = true;
 		pressedTime = 0;
 		doInitialAction();
 	}
 
-	public void Released() {
+	public virtual void Released() {
 		held = false;
 		if (pressed && pressedTime >= holdBeginThreshold * BeatManager.TickTime) {
 

@@ -15,6 +15,7 @@ public class EnemyHealth : MonoBehaviour
     CapsuleCollider capsuleCollider;
     bool isDead;
     bool isSinking;
+	ShieldAction shieldAction;
 
 
     void Awake ()
@@ -26,6 +27,7 @@ public class EnemyHealth : MonoBehaviour
 		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
 		enemyCounter = managers.GetComponent<EnemyManager> ();
         currentHealth = startingHealth;
+		shieldAction = new ShieldAction ();
     }
 
 
@@ -37,6 +39,9 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
+	void FixedUpdate() {
+		shieldAction.FixedUpdate ();
+	}
 
     public void TakeDamage (int amount, Vector3 hitPoint)
     {
