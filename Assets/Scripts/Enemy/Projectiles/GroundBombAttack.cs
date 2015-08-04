@@ -3,7 +3,6 @@ using System.Collections;
 
 public class GroundBombAttack : AbstractProjectileScript, IHasSequentialStates
 {
-	public int damage = 15;
 	public float explosiontime = .5f;
 	public float startingRadius = 5f;
 	public float explodeRadius = 6f;
@@ -65,7 +64,7 @@ public class GroundBombAttack : AbstractProjectileScript, IHasSequentialStates
 		this.meshrenderer.enabled = false;
 		audios.Play ();
 		redlight.range = 20;
-		damager.scheduleDamage(new GroundDamageEvent(this.damage, explodeRadius, bombpos));
+		damager.scheduleDamage(new GroundDamageEvent(this.damageVal, explodeRadius, bombpos));
 		exploded = 0;
     }
 	void UpdateExplosion() {

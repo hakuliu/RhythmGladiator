@@ -7,6 +7,7 @@ public class CannonHomingProjectile : AbstractReturnableProjectile, IHasSequenti
 	float currentTravelTime;
 
 	bool returning;
+	public float radius = 2f;
 
 	
 	protected override void Start ()
@@ -64,7 +65,7 @@ public class CannonHomingProjectile : AbstractReturnableProjectile, IHasSequenti
 	
 	void OnTriggerEnter(Collider col) {
 		if(col == this.player.GetComponent<CapsuleCollider>() && !returning) {
-			damager.scheduleDamage(new ReturnableSphericalDamageEvent(10, 2, this.transform.position, this));
+			damager.scheduleDamage(new ReturnableSphericalDamageEvent(damageVal, radius, this.transform.position, this));
 		}
 	}
 	public override void ReturnProjectile ()

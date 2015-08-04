@@ -4,7 +4,6 @@ using System.Collections;
 public class GroundSpikeProjectile : AbstractProjectileScript, IHasSequentialStates
 {
 	public float decayTimeS = 1f;
-	public int damage = 20;
 	public float debrisDistanceInterval = 5f;
 	public GameObject debrisObject;
 	float totalChaseTime;

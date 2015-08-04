@@ -3,7 +3,6 @@ using System.Collections;
 
 public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialStates
 {
-	public int attackDamage = 5;
 	public float damageRadius = .6f;
 	public float destroyFromTargetRadius = 1f;
 
@@ -115,7 +114,7 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 		gunLine.enabled = true;
 		gunLine.SetPosition (0, transform.position);
 		gunLine.SetPosition (1, targetLoc);
-		damager.scheduleDamage(new SphericalDamageEvent(this.attackDamage, this.damageRadius, targetLoc));
+		damager.scheduleDamage(new SphericalDamageEvent(this.damageVal, this.damageRadius, targetLoc));
 	}
 
 	void IHasSequentialStates.goToNextState() 

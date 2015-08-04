@@ -9,6 +9,8 @@ public abstract class AbstractProjectileScript : MonoBehaviour
 	protected PlayerDelayedPosition playerposlookup;
 	protected GameObject player;
 
+	public int damageVal;
+
 
 	protected virtual void Start() {
 		noTrackOverride = false;
