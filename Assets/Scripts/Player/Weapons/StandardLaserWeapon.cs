@@ -4,7 +4,7 @@ using System.Collections;
 public class StandardLaserWeapon : AbstractWeapon
 {
 	public float range = 100f;
-	
+	public GameObject womboAttackObj;
 	
 	Ray shootRay;
 	RaycastHit shootHit;
@@ -14,6 +14,8 @@ public class StandardLaserWeapon : AbstractWeapon
 	AudioSource gunAudio;
 	Light gunLight;
 	float effectsDisplayTime = 0.2f;
+	private MeshRenderer womborenderer;
+	private Collider wombocollider;
 
 	protected override void Start ()
 	{
@@ -23,6 +25,8 @@ public class StandardLaserWeapon : AbstractWeapon
 		gunLine = GetComponent <LineRenderer> ();
 		gunAudio = GetComponent<AudioSource> ();
 		gunLight = GetComponent<Light> ();
+		womborenderer = womboAttackObj.GetComponent<MeshRenderer> ();
+		wombocollider = womboAttackObj.GetComponent<CapsuleCollider> ();
 
 	}
 
@@ -39,15 +43,25 @@ public class StandardLaserWeapon : AbstractWeapon
 
 	public override void doWomboAttack ()
 	{
-
+		playervars.resetGlobalAttack ();
+		wombocollider.enabled = true;
+		womborenderer.enabled = true;
 	}
 
 	public void DisableEffects ()
 	{
 		gunLine.enabled = false;
 		gunLight.enabled = false;
+		wombocollider.enabled = false;
+		womborenderer.enabled = false;
 	}
-	
+
+	void OnTriggerEnter(Collider c) {
+		EnemyHealth h = c.GetComponent<EnemyHealth> ();
+		if (h != null) {
+			h.TakeDamage(dmg, new Vector3());
+		}
+	}
 	
 	void Shoot ()
 	{

@@ -8,11 +8,15 @@ public class StandardMeleeWeapon : AbstractWeapon
 	public GameObject womboAttackObj;
 	private MeshRenderer normalrenderer;
 	private Collider normalcollider;
+	private MeshRenderer womborenderer;
+	private Collider wombocollider;
 	protected override void Start ()
 	{
 		base.Start ();
 		normalrenderer = normalAttackObj.GetComponent<MeshRenderer> ();
 		normalcollider = normalAttackObj.GetComponent<CapsuleCollider> ();
+		womborenderer = womboAttackObj.GetComponent<MeshRenderer> ();
+		wombocollider = womboAttackObj.GetComponent<CapsuleCollider> ();
 	}
 	
 	// Update is called once per frame
@@ -28,7 +32,9 @@ public class StandardMeleeWeapon : AbstractWeapon
 
 	public override void doWomboAttack ()
 	{
-
+		playervars.resetGlobalAttack ();
+		wombocollider.enabled = true;
+		womborenderer.enabled = true;
 	}
 	void MeleeAttack() {
 		playervars.resetGlobalAttack ();
@@ -39,10 +45,11 @@ public class StandardMeleeWeapon : AbstractWeapon
 		if(playervars.GlobalAttackTimer >= playervars.timeBetweenGlobalAttacks * effectTime) {
 			normalcollider.enabled = false;
 			normalrenderer.enabled = false;
+			wombocollider.enabled = false;
+			womborenderer.enabled = false;
 		}
 	}
 	void OnTriggerEnter(Collider c) {
-		Debug.Log ("rawr");
 		EnemyHealth h = c.GetComponent<EnemyHealth> ();
 		if (h != null) {
 			h.TakeDamage(dmg, new Vector3());
