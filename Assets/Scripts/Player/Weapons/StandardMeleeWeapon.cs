@@ -4,14 +4,15 @@ using System.Collections;
 public class StandardMeleeWeapon : AbstractWeapon
 {
 	public float effectTime;
-	
-	private BoxCollider collision;
-	private MeshRenderer placerenderer;
+	public GameObject normalAttackObj;
+	public GameObject womboAttackObj;
+	private MeshRenderer normalrenderer;
+	private Collider normalcollider;
 	protected override void Start ()
 	{
 		base.Start ();
-		collision = GetComponent<BoxCollider> ();
-		placerenderer = GetComponent<MeshRenderer> ();
+		normalrenderer = normalAttackObj.GetComponent<MeshRenderer> ();
+		normalcollider = normalAttackObj.GetComponent<CapsuleCollider> ();
 	}
 	
 	// Update is called once per frame
@@ -31,16 +32,17 @@ public class StandardMeleeWeapon : AbstractWeapon
 	}
 	void MeleeAttack() {
 		playervars.resetGlobalAttack ();
-		collision.enabled = true;
-		placerenderer.enabled = true;
+		normalcollider.enabled = true;
+		normalrenderer.enabled = true;
 	}
 	void UpdateEffectsDecay() {
 		if(playervars.GlobalAttackTimer >= playervars.timeBetweenGlobalAttacks * effectTime) {
-			collision.enabled = false;
-			placerenderer.enabled = false;
+			normalcollider.enabled = false;
+			normalrenderer.enabled = false;
 		}
 	}
 	void OnTriggerEnter(Collider c) {
+		Debug.Log ("rawr");
 		EnemyHealth h = c.GetComponent<EnemyHealth> ();
 		if (h != null) {
 			h.TakeDamage(dmg, new Vector3());
