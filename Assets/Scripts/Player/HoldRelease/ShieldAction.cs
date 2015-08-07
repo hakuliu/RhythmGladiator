@@ -7,8 +7,10 @@ public class ShieldAction : AbstractHoldReleaseAction
 	private ShieldState shieldState;
 	private float shieldDecay = .3f;//seconds.
 	private float shieldTime;
-	public ShieldAction() : base(KeyCode.Mouse1) {
+	private Transform playertransform;
+	public ShieldAction(Transform transform) : base(KeyCode.Mouse1) {
 		shieldState = ShieldState.None;
+		this.playertransform = transform;
 	}
 	protected override void doInitialAction ()
 	{
@@ -41,10 +43,35 @@ public class ShieldAction : AbstractHoldReleaseAction
 		shieldTime += Time.fixedDeltaTime;
 	}
 	public bool shouldTakeDamage(Vector3 projectileLoc) {
-		return shieldState == ShieldState.None;
+		if (shieldState == ShieldState.None) {
+			return true;
+		} else if (shieldState == ShieldState.OmniReflect) {
+			return false;
+		} else if (shieldState == ShieldState.DReflect || shieldState == ShieldState.Standard) {
+			if(WithinShieldDirection(projectileLoc)) {
+				return false;
+			} else {
+				return true;
+			}
+
+		} else {
+			return true;
+		}
 	}
 	public bool shouldReflect(Vector3 projectileLoc) {
-		return (shieldState == ShieldState.DReflect || shieldState == ShieldState.OmniReflect);
+		if (shieldState == ShieldState.OmniReflect) {
+			return true;
+		} else if (shieldState == ShieldState.DReflect && WithinShieldDirection (projectileLoc)) {
+			return true;
+		}
+		return false;
+	}
+	public bool WithinShieldDirection(Vector3 projectileLoc) {
+		Vector3 forward = playertransform.TransformDirection(Vector3.forward);
+		Vector3 comp = projectileLoc - playertransform.position;
+		float angle = Vector3.Angle(forward, comp);
+		//Debug.Log(angle);
+		return angle < 45;
 	}
 }
 

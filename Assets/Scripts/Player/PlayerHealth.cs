@@ -32,7 +32,7 @@ public class PlayerHealth : MonoBehaviour
         playerMovement = GetComponent <PlayerMovement> ();
         currentHealth = startingHealth;
 		currentShield = startingShield;
-		shieldAction = new ShieldAction ();
+		shieldAction = new ShieldAction (this.transform);
     }
 
 
