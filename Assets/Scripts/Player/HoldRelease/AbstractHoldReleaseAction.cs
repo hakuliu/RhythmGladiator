@@ -13,6 +13,7 @@ public abstract class AbstractHoldReleaseAction
 
 
 	protected float pressedTime;
+	private bool lastPressed;
 	protected bool pressed;
 	private KeyCode key;
 	private bool held = false;
@@ -29,7 +30,7 @@ public abstract class AbstractHoldReleaseAction
 
 	public virtual void Released() {
 		held = false;
-		if (pressed && pressedTime >= holdBeginThreshold * BeatManager.TickTime) {
+		if (pressedTime >= holdBeginThreshold * BeatManager.TickTime) {
 
 			float pre = (releaseOptimalBeat - preReleaseVariance) * BeatManager.TickTime;
 			float post = (releaseOptimalBeat + postReleaseVariance) * BeatManager.TickTime;
@@ -44,6 +45,7 @@ public abstract class AbstractHoldReleaseAction
 	}
 
 	public virtual void FixedUpdate() {
+		pressed = Input.GetKey (key);
 		if (pressed) {
 			if(pressedTime >= holdBeginThreshold * BeatManager.TickTime && !held) {
 				held = true;
@@ -52,15 +54,18 @@ public abstract class AbstractHoldReleaseAction
 			}
 			pressedTime += Time.fixedDeltaTime;
 		}
-		if (Input.GetKeyDown (key)) {
+		if (PressedLastFrame()) {
 			Pressed();
 		}
-		if (Input.GetKeyUp (key)) {
+		if (ReleasedLastFrame()) {
 			Released();
 		}
+		lastPressed = pressed;
 	}
 	public virtual void Update() {
-		HoldEffectUpdate ();
+		if (pressed) {
+			HoldEffectUpdate ();
+		}
 	}
 	/// <summary>
 	/// for example, slow down player movement while holding.
@@ -77,5 +82,11 @@ public abstract class AbstractHoldReleaseAction
 	protected abstract void doInitialAction ();
 	protected abstract void doReleasedAction();
 
+	private bool PressedLastFrame() {
+		return !this.lastPressed && this.pressed;
+	}
+	private bool ReleasedLastFrame() {
+		return this.lastPressed && !this.pressed;
+	}
 }
 

@@ -25,6 +25,9 @@ public class PlayerMovement : MonoBehaviour
 	PlayerHorizontalMovementAction leapAction;
 	PlayerVerticalMovementAction jumpAction;
 
+
+	Light debuglight;
+
 	void Awake()
 	{
 		GameObject player = GameObject.FindGameObjectWithTag ("Player");
@@ -34,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
 		playerRigidbody = GetComponent<Rigidbody> ();
 		leapAction = new PlayerHorizontalMovementAction (playerRigidbody, globalvars);
 		jumpAction = new PlayerVerticalMovementAction (playerRigidbody, globalvars);
+		debuglight = GetComponent<Light> ();
 	}
 
 	void FixedUpdate()
@@ -51,6 +55,13 @@ public class PlayerMovement : MonoBehaviour
 
 		}
 
+		if (Input.GetKey(KeyCode.Space)) {
+			debuglight.color = Color.red;
+		} else {
+
+		//if(Input.GetKeyUp(KeyCode.Space)) {
+			debuglight.color = Color.white;
+		}
 
 		this.Anim ();
 		this.Turn ();
