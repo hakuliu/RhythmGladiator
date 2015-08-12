@@ -4,6 +4,7 @@ using System.Collections;
 public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialStates
 {
 	public float damageRadius = .6f;
+	public float targetVariance = .6f;
 	public float destroyFromTargetRadius = 1f;
 
 	//game objects and scripts from outside
@@ -110,7 +111,7 @@ public class BunnyProjectileMovement : AbstractProjectileScript, IHasSequentialS
 	void setTargetToPlayer()
 	{
 		//i think Vec3 in C# is a struct so this is safe and will copy, won't reference.
-		targetLoc = playerposlookup.lookupPlayerPositionWithDelay ();
+		targetLoc = playerposlookup.lookupPlayerPositionWithDelay (targetVariance);
 		gunLine.enabled = true;
 		gunLine.SetPosition (0, transform.position);
 		gunLine.SetPosition (1, targetLoc);

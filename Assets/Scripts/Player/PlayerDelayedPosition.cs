@@ -28,9 +28,20 @@ public class PlayerDelayedPosition : MonoBehaviour
 			currentIndex = 0;
 		}
 	}
-
 	public Vector3 lookupPlayerPositionWithDelay() {
-		return lookupWithIndex (currentIndex + 1);
+		return lookupPlayerPositionWithDelay (0f);
+	}
+	public Vector3 lookupPlayerPositionWithDelay(float variance) {
+		Vector3 rv = lookupWithIndex (currentIndex + 1);
+		variance = Mathf.Abs (variance);//just to make sure
+		if (variance != 0) {
+			float xvar = Random.Range(-variance, variance);
+			float zvar = Random.Range(-variance, variance);
+
+			rv.x += xvar;
+			rv.z += zvar;
+		}
+		return rv;
 	}
 
 	Vector3 lookupWithIndex(int index) {
