@@ -8,6 +8,7 @@ public class ShieldAction : AbstractHoldReleaseAction
 	private float shieldDecay = .3f;//seconds.
 	private float shieldTime;
 	private Transform playertransform;
+	private float shieldDirectionAngle = 90f;
 	public ShieldAction(Transform transform) : base(KeyCode.Mouse1) {
 		shieldState = ShieldState.None;
 		this.playertransform = transform;
@@ -70,8 +71,8 @@ public class ShieldAction : AbstractHoldReleaseAction
 		Vector3 forward = playertransform.TransformDirection(Vector3.forward);
 		Vector3 comp = projectileLoc - playertransform.position;
 		float angle = Vector3.Angle(forward, comp);
-		//Debug.Log(angle);
-		return angle < 45;
+		Debug.Log(angle);
+		return angle < shieldDirectionAngle;
 	}
 }
 
