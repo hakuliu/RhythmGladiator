@@ -39,7 +39,7 @@ public class PlayerHorizontalMovementAction : AbstractHoldReleaseAction
 	}
 	protected override void applyHoldPhysicsBehavior ()
 	{
-		playervars.playerMovementModifier = .5f;
+		playervars.playerMovementModifier = .1f;
 	}
 	protected override void removeHoldPhysicsBehavior ()
 	{

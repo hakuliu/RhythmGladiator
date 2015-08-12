@@ -29,6 +29,9 @@ public abstract class AbstractHoldReleaseAction
 	}
 
 	public virtual void Released() {
+		removeHoldPhysicsBehavior();
+		EndHoldEffect();
+		pressed = false;
 		held = false;
 		if (pressedTime >= holdBeginThreshold * BeatManager.TickTime) {
 
@@ -37,20 +40,21 @@ public abstract class AbstractHoldReleaseAction
 			if(pressedTime >= pre && pressedTime <= post) {
 				doReleasedAction();
 			}
-			removeHoldPhysicsBehavior();
-			EndHoldEffect();
-			applyRecoil ();
 		}
-		pressed = false;
+		applyRecoil ();
+	}
+
+	public virtual void Held() {
+		held = true;
+		applyHoldPhysicsBehavior();
+		BeginHoldEffect();
 	}
 
 	public virtual void FixedUpdate() {
 		pressed = Input.GetKey (key);
 		if (pressed) {
 			if(pressedTime >= holdBeginThreshold * BeatManager.TickTime && !held) {
-				held = true;
-				applyHoldPhysicsBehavior();
-				BeginHoldEffect();
+				Held ();
 			}
 			pressedTime += Time.fixedDeltaTime;
 		}
@@ -63,7 +67,7 @@ public abstract class AbstractHoldReleaseAction
 		lastPressed = pressed;
 	}
 	public virtual void Update() {
-		if (pressed) {
+		if (held) {
 			HoldEffectUpdate ();
 		}
 	}
