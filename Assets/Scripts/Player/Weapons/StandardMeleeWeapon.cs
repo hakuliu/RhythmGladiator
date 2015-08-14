@@ -27,20 +27,22 @@ public class StandardMeleeWeapon : AbstractWeapon
 
 	public override void doNormalAttack ()
 	{
-		MeleeAttack ();
+		if (weapEnabled) {
+			playervars.resetGlobalAttack ();
+			normalcollider.enabled = true;
+			normalrenderer.enabled = true;
+		}
 	}
 
 	public override void doWomboAttack ()
 	{
-		playervars.resetGlobalAttack ();
-		wombocollider.enabled = true;
-		womborenderer.enabled = true;
+		if (weapEnabled && womboEnabled) {
+			playervars.resetGlobalAttack ();
+			wombocollider.enabled = true;
+			womborenderer.enabled = true;
+		}
 	}
-	void MeleeAttack() {
-		playervars.resetGlobalAttack ();
-		normalcollider.enabled = true;
-		normalrenderer.enabled = true;
-	}
+
 	void UpdateEffectsDecay() {
 		if(playervars.GlobalAttackTimer >= playervars.timeBetweenGlobalAttacks * effectTime) {
 			normalcollider.enabled = false;

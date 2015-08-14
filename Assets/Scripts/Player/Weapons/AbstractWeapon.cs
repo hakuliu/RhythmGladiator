@@ -3,6 +3,8 @@ using System.Collections;
 
 public abstract class AbstractWeapon : MonoBehaviour
 {
+	public bool weapEnabled;
+	public bool womboEnabled;
 	public int dmg;
 	public float standardrecoil;
 	protected PlayerVars playervars;
