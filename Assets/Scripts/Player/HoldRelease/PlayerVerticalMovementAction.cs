@@ -5,9 +5,9 @@ public class PlayerVerticalMovementAction : AbstractHoldReleaseAction
 {
 	public float jumpForce = 1.5f;
 	public float jumpDecay = 1.5f;
+	public float onGroundThreshold = .1f;
 	private Rigidbody playerRigidbody;
 	private PlayerVars playervars;
-	private float timeBetweenJump = 1f;
 	private float timerJump = 0;
 	private bool jumping;
 	private Vector3 vel;
@@ -33,10 +33,17 @@ public class PlayerVerticalMovementAction : AbstractHoldReleaseAction
 		JumpUpdate ();
 		if (pressed) {
 			playerRigidbody.useGravity = false;
+			if(!jumping) {
+				HoverUpdate();
+			}
 		} else {
 			playerRigidbody.useGravity = true;
 		}
 
+	}
+	void HoverUpdate() {
+		vel.y -= playervars.hoverFallSpeed;
+		playerRigidbody.MovePosition(playerRigidbody.transform.position + vel);
 	}
 	void JumpUpdate() {
 		if (jumping) {
@@ -50,7 +57,7 @@ public class PlayerVerticalMovementAction : AbstractHoldReleaseAction
 	}
 	void Jump ()
 	{
-		if (timerJump >= timeBetweenJump) {
+		if (OnGround()) {
 			timerJump = 0;
 			Vector3 up = playerRigidbody.transform.TransformDirection(Vector3.up);
 			vel = up * jumpForce;
@@ -62,6 +69,9 @@ public class PlayerVerticalMovementAction : AbstractHoldReleaseAction
 		Vector3 tempos = playerRigidbody.transform.position;
 		tempos.y = 0f;
 		playerRigidbody.MovePosition (tempos);
+	}
+	bool OnGround() {
+		return playerRigidbody.transform.position.y <= this.onGroundThreshold;
 	}
 }
 

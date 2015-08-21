@@ -7,13 +7,12 @@ using System.Collections;
 public class PlayerVars : MonoBehaviour
 {
 	public float timeBetweenGlobalAttacks;
-	///to be replaced later by types of sword but for now do this.
-	public bool hasSword;
-	public bool hasGun;
+
 	public bool busy;//when busy, can't initiate most actions.
 	public float playerMovementModifier = 1f;
 	public Projector playerRangeIndicator;
 	public float blinkRange = 7f;
+	public float hoverFallSpeed = .1f;
 
 
 	///shared among shooting and melee (and other future things?)
