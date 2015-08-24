@@ -23,8 +23,7 @@ public class EnemyHealth : MonoBehaviour
         enemyAudio = GetComponent <AudioSource> ();
         hitParticles = GetComponentInChildren <ParticleSystem> ();
         capsuleCollider = GetComponent <CapsuleCollider> ();
-		GameObject managers = GameObject.FindGameObjectWithTag ("CustomManagers");
-		enemyCounter = managers.GetComponent<EnemyManager> ();
+		enemyCounter = EnemyManager.Get ();
         currentHealth = startingHealth;
     }
 

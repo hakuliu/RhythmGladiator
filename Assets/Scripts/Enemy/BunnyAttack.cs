@@ -16,7 +16,6 @@ public class BunnyAttack : AbstractEnemyAttack
 	{
 		base.Start ();
         playerHealth = player.GetComponent <PlayerHealth> ();
-		BeatScheduler.ScheduleNextMeasure (new StartTrackEvent (track));
     }
 
 	protected override void assignTrack ()

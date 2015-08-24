@@ -15,7 +15,7 @@ public class ExitGateScript : MonoBehaviour
 	
 	void OnTriggerEnter(Collider col) {
 		if(col == this.player.GetComponent<CapsuleCollider>()) {
-			em.InvokeIfWinning();
+			//em.InvokeIfWinning();
 		}
 	}
 }

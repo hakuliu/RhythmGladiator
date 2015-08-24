@@ -30,5 +30,8 @@ public abstract class AbstractEnemyAttack : MonoBehaviour
 		track.FixedUpdate ();
 	}
 	protected abstract void assignTrack();
+	public BeatTracker GetTrack() {
+		return track;
+	}
 }
 
