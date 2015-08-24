@@ -5,9 +5,8 @@ public class KilledSetTriggeredEvent : AbstractEnemyManagerEvent
 {
 	//attempt to find this from hierarchy, so no need to set them now.
 	private int enemyCount;
-	public override void Start ()
+	public void Start ()
 	{
-		base.Start ();
 		enemyCount = this.eventCollection.Length;
 	}
 	public bool DecrementCount() {

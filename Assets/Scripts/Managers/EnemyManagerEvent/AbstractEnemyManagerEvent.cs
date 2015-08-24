@@ -4,7 +4,7 @@ using System.Collections;
 public abstract class AbstractEnemyManagerEvent : MonoBehaviour
 {
 	protected IEnemyInitiator[] eventCollection;
-	public virtual void Start() {
+	void Awake() {
 		if(eventCollection == null || eventCollection.Length == 0) {
 			IEnemyInitiator[] temp = this.GetComponentsInChildren<IEnemyInitiator>();
 			this.eventCollection = temp;

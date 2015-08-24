@@ -5,10 +5,11 @@ public class EnemyManager : MonoBehaviour
 	private AbstractEnemyManagerEvent[] events;
 	private int currentEventIndex;
 	private static EnemyManager self;
+	void Awake() {
+		events = GetComponentsInChildren<AbstractEnemyManagerEvent> ();
+	}
     void Start ()
     {
-		events = GetComponentsInChildren<AbstractEnemyManagerEvent> ();
-		Debug.Log (events.Length);
 		currentEventIndex = 0;
 		TriggerCurrentEvent ();
     }
