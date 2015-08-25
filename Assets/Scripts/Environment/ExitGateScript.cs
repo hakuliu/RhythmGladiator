@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ExitGateScript : MonoBehaviour
 {
+	public bool letPlayerWin = false;
 	private EnemyManager em;
 	private GameObject player;
 	// Use this for initialization
@@ -15,8 +16,18 @@ public class ExitGateScript : MonoBehaviour
 	
 	void OnTriggerEnter(Collider col) {
 		if(col == this.player.GetComponent<CapsuleCollider>()) {
-			//em.InvokeIfWinning();
+			if(letPlayerWin) {
+				LoadNextLevel();
+			}
 		}
+	}
+
+	public void allowWin() {
+		letPlayerWin = true;
+	}
+	private void LoadNextLevel() {
+		int i = Application.loadedLevel;
+		Application.LoadLevel(i+1);
 	}
 }
 

@@ -2,6 +2,7 @@
 
 public class EnemyManager : MonoBehaviour
 {
+	public ExitGateScript exitScript;
 	private AbstractEnemyManagerEvent[] events;
 	private int currentEventIndex;
 	private static EnemyManager self;
@@ -30,7 +31,7 @@ public class EnemyManager : MonoBehaviour
 		currentEventIndex++;
 		if (currentEventIndex >= events.Length) {
 			//we're done here
-			LoadNextLevel ();
+			exitScript.allowWin();
 		} else {
 			TriggerCurrentEvent();
 		}
@@ -41,10 +42,7 @@ public class EnemyManager : MonoBehaviour
 			totrigger.doEvent();
 		}
 	}
-	private void LoadNextLevel() {
-		int i = Application.loadedLevel;
-		Application.LoadLevel(i+1);
-	}
+
 	private AbstractEnemyManagerEvent GetCurrentEventTrigger() {
 		if (currentEventIndex >= 0 && currentEventIndex < this.events.Length) {
 			return this.events [this.currentEventIndex];
